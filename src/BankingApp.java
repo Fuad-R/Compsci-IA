@@ -137,8 +137,6 @@ class BankingApp {
 
             int action = 0;
 
-            while (action <6) {
-            // Dashboard
             System.out.println(filler);
             System.out.println("Welcome to your dashboard, " + usernameInput + "! What would you like to do today?");
             System.out.println(filler);
@@ -155,7 +153,28 @@ class BankingApp {
 
             switch (action) {
                 case 1:
+                    // Pull balance from database
                     System.out.println("View Balance");
+                    String balanceQuery = "SELECT Balance FROM UserData WHERE Username = ?";
+                    PreparedStatement balanceStatement = connection.prepareStatement(balanceQuery);
+                    balanceStatement.setString(1, usernameInput);
+                    ResultSet balanceResult = balanceStatement.executeQuery();
+
+
+                    // Print balance
+                    if (balanceResult.next()) {
+                        double balance = balanceResult.getDouble("Balance");
+                        System.out.println("Your current balance is: $" + balance);
+                        System.out.println("Press enter to return to the dashboard.");
+                        String confirm = scanner.nextLine();
+                        
+
+                    } else {
+                        System.out.println("Failed to retrieve balance.");
+                    }
+
+                    balanceResult.close();
+                    balanceStatement.close();
                     break;
                 case 2:
                     System.out.println("Deposit");
@@ -177,15 +196,11 @@ class BankingApp {
                     break;
             }
 
-            
-
-            }
-
             //Close remaining operations
             resultSet.close();
             statement.close();
             connection.close();
-            
+
         } catch (SQLException e) {
 
             System.out.println("\u001B[31mConnection failed! Check output console\u001B[0m");
