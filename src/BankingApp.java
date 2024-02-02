@@ -147,7 +147,7 @@ class BankingApp {
             System.out.println("4. Transfer");
             System.out.println("5. Manage Account");
             System.out.println("6. Exit");
-
+            
             System.out.print("Please enter the number of the action you would like to perform: ");
             action = scanner.nextInt();
 
