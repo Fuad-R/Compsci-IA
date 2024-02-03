@@ -133,10 +133,12 @@ class BankingApp {
             
             }
 
-            int exitDash = 0;
+            int exitDash = 1;
             
             // Display dashboard
-            while (exitDash == 0) {
+
+        while (exitDash == 1) {
+            
             int action = 0;
 
             // Call the displayUserDashboard method
@@ -164,23 +166,40 @@ class BankingApp {
                     if (balanceResult.next()) {
 
                         double balance = balanceResult.getDouble("Balance");
+                        System.out.println(filler);
+                        System.out.println();
+
                         System.out.println("Your current balance is: $" + balance);
-                        System.out.print("Press enter to return to the dashboard:");
                         
-                        // Wait for user to press enter
-                        scanner.nextLine();
-                        scanner.nextLine();
-
-
                     } else {
                         System.out.println("Failed to retrieve balance.");
+                    }
+
+                    // Decide what to do next
+                    System.out.println();
+                    System.out.println(filler);
+                    System.out.println();
+                    System.out.print("Type 1 to return to the dashboard, or 2 to exit: ");
+
+                    exitDash = scanner.nextInt();
+                    if (exitDash == 2) {
+                        System.out.println("Exiting now, goodbye.");
+                        break;
                     }
 
                     balanceResult.close();
                     balanceStatement.close();
                     break;
+
                 case 2:
-                    System.out.println("Deposit");
+
+                    // Clear terminal
+                    System.out.print(clear);
+                    System.out.flush();
+
+                    System.out.println(filler);
+                    System.out.println("Depositing Menu");
+                    System.out.println(filler);
 
                     // Ask for deposit amount
                     System.out.print("Please enter the amount you would like to deposit: ");
@@ -199,6 +218,8 @@ class BankingApp {
                     newBalanceStatement.setString(1, usernameInput);
                     ResultSet newBalanceResult = newBalanceStatement.executeQuery();
                     
+                    System.out.println();
+
                     // Print new balance
                     if (newBalanceResult.next()) {
                         double newBalance = newBalanceResult.getDouble("Balance");
@@ -207,9 +228,29 @@ class BankingApp {
                         System.out.println("Failed to retrieve new balance.");
                     }
 
+                     // Decide what to do next
+                     System.out.println();
+                     System.out.println(filler);
+                     System.out.println();
+                     System.out.print("Type 1 to return to the dashboard, or 2 to exit: ");
+ 
+                     exitDash = scanner.nextInt();
+                     if (exitDash == 2) {
+                         System.out.println("Exiting now, goodbye.");
+                         break;
+                     }
+                    
                     break;
                 case 3:
-                    System.out.println("Withdraw");
+
+                    // Clear terminal
+                    System.out.println(clear);
+                    System.out.flush();
+                    
+                    // Print withdraw menu message
+                    System.out.println(filler);
+                    System.out.println("Withdraw Menu");
+                    System.out.println(filler);
 
                     // Ask for withdraw amount
                     System.out.print("Please enter the amount you would like to withdraw: ");
@@ -231,10 +272,29 @@ class BankingApp {
                     // Print new balance
                     if (newWithdrawResult.next()) {
                         double newBalance = newWithdrawResult.getDouble("Balance");
+
+                        // Clear terminal
+                        System.out.print(clear);
+                        System.out.flush();
+
+                        System.out.println(filler);
+                        System.out.println("Withdrawal successful! You withdrew: $" + withdrawAmount);
                         System.out.println("Your new balance is: $" + newBalance);
+                        System.out.println(filler);
+
                     } else {
                         System.out.println("Failed to retrieve new balance.");
                     }
+
+                     // Decide what to do next
+                     System.out.println();
+                     System.out.print("Type 1 to return to the dashboard, or 2 to exit: ");
+ 
+                     exitDash = scanner.nextInt();
+                     if (exitDash == 2) {
+                         System.out.println("Exiting now, goodbye.");
+                         break;
+                     }
 
                     break;
                 case 4:
@@ -344,18 +404,153 @@ class BankingApp {
                         System.out.println("Failed to retrieve new balance.");
                     }
 
+                     // Decide what to do next
+                     System.out.println();
+                     System.out.println(filler);
+                     System.out.println();
+                     System.out.print("Type 1 to return to the dashboard, or 2 to exit: ");
+ 
+                     exitDash = scanner.nextInt();
+                     if (exitDash == 2) {
+                         System.out.println("Exiting now, goodbye.");
+                         break;
+                     }
+
                     break;
                 case 5:
                     System.out.println("Manage Account");
+
+                    // Clear terminal
+                    System.out.print(clear);
+                    System.out.flush();
+
+                    System.out.println(filler);
+                    System.out.println("Account Management Menu");
+                    System.out.println(filler);
+
+                    System.out.println("1. Change Password");
+                    System.out.println("2. Delete Account");
+                    System.out.println("3. Return to Dashboard");
+                    System.out.println();
+                    System.out.print("Please enter the number of the action you would like to perform: ");
+                    int accountAction = scanner.nextInt();
+
+                    // Clear terminal
+                    System.out.print(clear);
+                    System.out.flush();
+
+                    switch (accountAction) {
+                        case 1:
+                            System.out.println(filler);
+                            System.out.println("Password Change Menu");
+                            System.out.println(filler);
+                            System.out.println();
+
+                            // Ask for old password
+                            System.out.print("Please enter your old password: ");
+                            String oldPassword = scanner.nextLine();
+                            oldPassword = scanner.nextLine(); // Once again no idea why this is needed, but it is :(
+
+                            // Verify old password
+                            String verifyQuery = "SELECT Password FROM UserData WHERE Username = ?";
+                            PreparedStatement verifyStatement = connection.prepareStatement(verifyQuery);
+                            verifyStatement.setString(1, usernameInput);
+                            ResultSet verifyResult = verifyStatement.executeQuery();
+
+                            if (verifyResult.next()) {
+                                String storedPassword = verifyResult.getString("Password");
+                                if (!storedPassword.equals(oldPassword)) {
+
+                                    // Clear terminal
+                                    System.out.print(clear);
+                                    System.out.flush();
+
+                                    // Print error message
+                                    System.out.println("Incorrect old password. Password change cancelled.");
+                                    System.out.print("Press enter to return to dashboard:");
+                                    scanner.nextLine();
+
+                                    break;
+                                }
+                            } else {
+                                System.out.println("Failed to retrieve old password. Password change cancelled.");
+                                break;
+                            }
+
+                            System.out.println();
+                            System.out.print("Please enter your new password: ");
+                            String newPassword = scanner.nextLine();
+                            newPassword = scanner.nextLine(); // Same as before, again...
+
+                            System.out.println();
+                            System.out.print("Please enter your new password again to confirm: ");
+                            String passwordConfirm = scanner.nextLine();
+                            passwordConfirm = scanner.nextLine(); // Same here lol (4th time now)
+                            System.out.println();
+
+                            boolean passwordMatch = newPassword.equals(passwordConfirm);
+
+                            while (!passwordMatch) {
+                                System.out.println("Passwords do not match, please try again");
+                                System.out.print("Please enter your new password: ");
+                                newPassword = scanner.nextLine();
+                                System.out.print("Please enter your new password again to confirm: ");
+                                passwordConfirm = scanner.nextLine();
+                                passwordMatch = newPassword.equals(passwordConfirm);
+                            }
+
+                            // Update password in database
+                            String passwordQuery = "UPDATE UserData SET Password = ? WHERE Username = ?";
+                            PreparedStatement passwordStatement = connection.prepareStatement(passwordQuery);
+                            passwordStatement.setString(1, newPassword);
+                            passwordStatement.setString(2, usernameInput);
+                            passwordStatement.executeUpdate();
+
+                            System.out.println("Password changed successfully!");
+
+                            break;
+                        case 2:
+                            System.out.println("Delete Account");
+
+                            // Ask for confirmation
+                            System.out.print("Are you sure you want to delete your account? (\u001B[32mY\u001B[0m/\u001B[31mN\u001B[0m): ");
+                            String deleteAccount = scanner.nextLine();
+                            deleteAccount = scanner.nextLine(); // No idea why this is needed, but it is
+
+                            if (deleteAccount.equals("Y") || deleteAccount.equals("y")) {
+                                // Delete account from database
+                                String deleteQuery = "DELETE FROM UserData WHERE Username = ?";
+                                PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery);
+                                deleteStatement.setString(1, usernameInput);
+                                deleteStatement.executeUpdate();
+
+                                System.out.println("Account deleted successfully!");
+                                exitDash = 2;
+                            } else {
+                                System.out.println("Account deletion cancelled, returning to dashboard.");
+                            }
+
+                            break;
+                        case 3:
+                            System.out.println("Returning to dashboard...");
+                            break;
+                        default:
+                            System.out.println("Invalid action, returning to dashboard.");
+                            break;
+                    }
+
                     break;
                 case 6:
                     System.out.println("Exiting now, goodbye.");
+
+                    exitDash = 2;
+
                     break;
                 default:
                     System.out.println("Invalid action, returning to dashboard.");
                     break;
             }
-
+            
         }
 
             //Close remaining operations
