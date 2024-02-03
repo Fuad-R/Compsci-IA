@@ -133,24 +133,17 @@ class BankingApp {
             
             }
 
-            // Clear the terminal
-            System.out.print(clear);
-            System.out.flush();
-
+            int exitDash = 0;
+            
+            // Display dashboard
+            while (exitDash == 0) {
             int action = 0;
 
-            System.out.println(filler);
-            System.out.println("Welcome to your dashboard, " + usernameInput + "! What would you like to do today?");
-            System.out.println(filler);
+            // Call the displayUserDashboard method
+            AppDashboard appDashboard = new AppDashboard();
+            appDashboard.displayUserDashboard(usernameInput);
 
-            System.out.println("1. View Balance");
-            System.out.println("2. Deposit");
-            System.out.println("3. Withdraw");
-            System.out.println("4. Transfer");
-            System.out.println("5. Manage Account");
-            System.out.println("6. Exit");
-
-            System.out.print("Please enter the number of the action you would like to perform: ");
+            // Ask for action
             action = scanner.nextInt();
 
             switch (action) {
@@ -362,6 +355,8 @@ class BankingApp {
                     System.out.println("Invalid action, returning to dashboard.");
                     break;
             }
+
+        }
 
             //Close remaining operations
             resultSet.close();
