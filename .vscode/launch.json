@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "name": "Launch Current File",
+            "type": "java",
+            "request": "launch",
+            "mainClass": "${file}",
+            "vmArgs": "--module-path C:/Users/fuada/Desktop/Compsci-IA/javafx-sdk-21.0.2/lib/ --add-modules javafx.controls,javafx.fxml"
+        }
+    ]
+}

@@ -42,6 +42,7 @@ class BankingApp {
             System.out.println("Welcome to the Banking App!");
             System.out.println(filler);
 
+
             // Ask for Username input
             System.out.print("Please enter your Username: ");
             String usernameInput = scanner.nextLine();

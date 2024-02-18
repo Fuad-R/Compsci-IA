@@ -1,18 +1,13 @@
-import java.util.Scanner;
-
 public class AppDashboard {
         
     public static void displayUserDashboard(String usernameInput) {
             
-        Scanner scanner = new Scanner(System.in);
         String filler = "-------------------------------------------------------------------";
         String clear = "\033[H\033[2J";
 
         // Clear the terminal
         System.out.print(clear);
         System.out.flush();
-
-        int action = 0;
 
         System.out.println(filler);
         System.out.println("Welcome to your dashboard, " + usernameInput + "! What would you like to do today?");
