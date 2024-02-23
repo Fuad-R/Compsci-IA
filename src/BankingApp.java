@@ -4,13 +4,29 @@ import java.sql.SQLException;
 import java.util.Scanner;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 class BankingApp {
     public static void main(String[] args) {
         // Load Database credentials
         String url = "jdbc:mysql://192.168.1.70:3306/BankingDB";
-        String username = "root";
-        String password = "notarealpassword";
+        String username = "";
+        String password = "";
+
+        // Load credentials from properties file
+        try (FileInputStream fis = new FileInputStream("db.properties")) {
+            Properties props = new Properties();
+            props.load(fis);
+
+            username = props.getProperty("username");
+            password = props.getProperty("password");
+        } catch (IOException e) {
+            System.out.println("Error loading database credentials");
+            e.printStackTrace();
+            return;
+        }
+
         Scanner scanner = new Scanner(System.in);
         String filler = "-------------------------------------------------------------------";
         String clear = "\033[H\033[2J";
