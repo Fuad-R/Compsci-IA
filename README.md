@@ -4,7 +4,7 @@
 
 This project is a simple Banking Application developed for my IB Computer Science Internal Assessment. It is written in Java and provides a basic interface for banking operations.
 
-#Features
+# Features
 - Account creation
 - Deposit and withdrawal operations
 - Account balance checks
