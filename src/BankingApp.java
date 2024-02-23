@@ -10,7 +10,7 @@ class BankingApp {
         // Load Database credentials
         String url = "jdbc:mysql://192.168.1.70:3306/BankingDB";
         String username = "root";
-        String password = "Fuadr1234";
+        String password = "notarealpassword";
         Scanner scanner = new Scanner(System.in);
         String filler = "-------------------------------------------------------------------";
         String clear = "\033[H\033[2J";
