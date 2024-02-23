@@ -13,7 +13,7 @@ This project is a simple Banking Application developed for my IB Computer Scienc
 # Installation
 To install this project, you need to have Java installed on your machine. You can download the project and open it in any Java IDE (like IntelliJ IDEA, Eclipse, or NetBeans).
 
-#Usage
+# Usage
 After running the BankingApp.java file, you will be presented with a dashboard where you can choose different operations like creating an account, depositing money, withdrawing money, checking your balance, and viewing your transaction history.
 
 # Contributing
