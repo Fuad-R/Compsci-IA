@@ -570,6 +570,7 @@ class BankingApp {
             
         }
 
+        
             //Close remaining operations
             resultSet.close();
             statement.close();
