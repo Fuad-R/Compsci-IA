@@ -7,7 +7,12 @@ import java.sql.ResultSet;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
-class BankingApp {
+public class BankingApp {
+
+    //universal variables
+    public static final String filler = "-------------------------------------------------------------------";
+    public static final String clear = "\033[H\033[2J";
+
     public static void main(String[] args) {
         // Load Database credentials
         String url = "jdbc:mysql://192.168.1.70:3306/BankingDB";
@@ -28,8 +33,6 @@ class BankingApp {
         }
 
         Scanner scanner = new Scanner(System.in);
-        String filler = "-------------------------------------------------------------------";
-        String clear = "\033[H\033[2J";
 
         // Load MySQL JDBC Driver
         try {
@@ -48,7 +51,6 @@ class BankingApp {
             Connection connection = DriverManager.getConnection(url, username, password);
             System.out.println("\u001B[32mDatabase connection established!\u001B[0m");
 
-            // Perform database operations here
             // Clear the terminal
             System.out.print(clear);
             System.out.flush();
