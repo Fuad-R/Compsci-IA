@@ -5,6 +5,7 @@
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/fuad-r/compsci-ia?style=flat)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/fuad-r/compsci-ia/gradle.yml)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Fuad-R/Compsci-IA/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/Fuad-R/Compsci-IA/?branch=main)
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/fuad-r/compsci-ia?style=flat)
 
 # BankingApp
 
