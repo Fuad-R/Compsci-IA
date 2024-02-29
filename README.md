@@ -3,6 +3,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/fuad-r/compsci-ia/badge/main)](https://www.codefactor.io/repository/github/fuad-r/compsci-ia/overview/main)
 ![GitHub License](https://img.shields.io/github/license/fuad-r/compsci-ia?style=flat&color=%23f5d742)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/fuad-r/compsci-ia?style=flat)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/fuad-r/compsci-ia/gradle.yml)
 
 
 # BankingApp
