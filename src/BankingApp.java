@@ -54,103 +54,20 @@ public class BankingApp {
             // Clear the terminal
             System.out.print(clear);
             System.out.flush();
-            
-            // Welcome message
-            System.out.println(filler);
-            System.out.println("Welcome to the Banking App!");
-            System.out.println(filler);
+          
+            // Check if user is logged in
+            boolean loggedInStatus = UserAuth.isLoggedIn();
 
+            while (loggedInStatus == false) {
 
-            // Ask for Username input
-            System.out.print("Please enter your Username: ");
-            String usernameInput = scanner.nextLine();
+            // Call UserAuth class to display login dashboard
+            UserAuth.loginmethod();
 
-            System.out.print("Please enter your Password: ");
-            String passwordInput = scanner.nextLine();
+            loggedInStatus = UserAuth.isLoggedIn();
 
-            // Check if the user exists
-            String query = "SELECT * FROM UserData WHERE Username = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, usernameInput);
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                System.out.println("User exists, signing you in now...");
-
-                String dbPassword = resultSet.getString("Password");
-                if (dbPassword.equals(passwordInput)) {
-                    System.out.println("Password matched, signing you in...");
-                                        
-                } else {
-                    System.out.println("Incorrect password, please try again.");
-                    
-                    int attempts = 3; // Number of attempts allowed
-                    while (attempts > 0) {
-                        System.out.print("Please enter your Password: ");
-                        passwordInput = scanner.nextLine();
-
-                        if (dbPassword.equals(passwordInput)) {
-                            System.out.println("Password matched, signing you in...");
-                            break; // Add this line to exit the loop
-
-                        } else {
-                            attempts--;
-                            System.out.println("Incorrect password, " + attempts + " attempts remaining.");
-                            if (attempts == 0) {
-
-                                // Clear the terminal
-                                System.out.print(clear);
-                                System.out.flush();
-
-                                System.out.println(filler);
-                                System.out.println("You have exceeded the maximum number of attempts.");
-                                System.out.println("Please try again later, or contact support if you believe this is a mistake.");
-                                System.out.println(filler);
-
-                                return;
-                            }
-                        }
-                    }
-
-                }
-
-            } else {
-                System.out.print("User does not exist!, would you like to create an account? (\u001B[32mY\u001B[0m/\u001B[31mN\u001B[0m): ");
-                String createAccount = scanner.nextLine();
-
-                if (createAccount.equals("Y") || createAccount.equals("y")) {
-                    System.out.print("Please enter your Username: ");
-                    String newUsername = scanner.nextLine();
-                    System.out.println("Your username was set to " + newUsername);
-                    System.out.print("Please enter your password: ");
-                    String newPassword = scanner.nextLine();
-                    System.out.print("Please enter your password again to confirm: ");
-                    String passwordConfirm = scanner.nextLine();
-
-                    boolean passwordMatch = newPassword.equals(passwordConfirm);
-
-                    while (!passwordMatch) {
-                        System.out.println("Passwords do not match, please try again");
-                        System.out.print("Please enter your password: ");
-                        newPassword = scanner.nextLine();
-                        System.out.print("Please enter your password again to confirm: ");
-                        passwordConfirm = scanner.nextLine();
-                        passwordMatch = newPassword.equals(passwordConfirm);
-                    }
-                    
-                    String insertQuery = "INSERT INTO UserData (Username, Password) VALUES (?, ?)";
-                    PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
-                    insertStatement.setString(1, newUsername);
-                    insertStatement.setString(2, newPassword);
-                    insertStatement.executeUpdate();
-                    System.out.println("Account created successfully!");
-
-                } else {
-                    System.out.println("Exiting now, goodbye.");
-                    return;
-                }
-            
             }
+
+            String usernameInput = UserAuth.getUsername();
 
             int exitDash = 1;
             
@@ -574,8 +491,8 @@ public class BankingApp {
 
         
             //Close remaining operations
-            resultSet.close();
-            statement.close();
+//            resultSet.close();
+//            statement.close();
             connection.close();
 
         } catch (SQLException e) {

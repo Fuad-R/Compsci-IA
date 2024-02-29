@@ -9,12 +9,15 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class UserAuth extends BankingApp {
-        
-    public static void loginmethod(boolean isloggedin) {
+    
+    private static boolean isloggedin = false;
+    private static String usernameInput = "";
+
+    public static void loginmethod() {
         Scanner scanner = new Scanner(System.in);
 
         boolean authed = false;
-        
+
         // Load Database credentials
         String url = "jdbc:mysql://192.168.1.70:3306/BankingDB";
         String username = "";
@@ -49,8 +52,6 @@ public class UserAuth extends BankingApp {
         try {
             Connection connection = DriverManager.getConnection(url, username, password);
             System.out.println("\u001B[32mDatabase connection established!\u001B[0m");
-
-        while (authed == false) {
         
         // Clear the terminal
         System.out.print(clear);
@@ -77,9 +78,11 @@ public class UserAuth extends BankingApp {
 
             case 1: // Login
 
+            while (authed == false) {
+
             // Ask for username input
             System.out.print("Please enter your username: ");
-            String usernameInput = scanner.next();
+            usernameInput = scanner.next();
             
             // Check if the user exists
             String query = "SELECT * FROM UserData WHERE Username = ?";
@@ -88,7 +91,12 @@ public class UserAuth extends BankingApp {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                System.out.println("User exists, please enter your password to login: ");
+
+                // Clear the terminal
+                System.out.print(clear);
+                System.out.flush();
+
+                System.out.println("User exists!");
 
                 // Ask for password input
                 System.out.print("Please enter your password: ");
@@ -103,20 +111,29 @@ public class UserAuth extends BankingApp {
                 
                 } else {
                     System.out.println("Incorrect password, please try again.");
+                    System.out.println();
                     
                     int attempts = 3; // Number of attempts allowed
                     while (attempts > 0) {
+
                         System.out.print("Please enter your Password: ");
                         passwordInput = scanner.nextLine();
 
                         if (dbPassword.equals(passwordInput)) {
                             System.out.println("Password matched, signing you in...");
                             authed = true;
+                            isloggedin = true;
+                            
 
                             break; 
 
                         } else {
                             attempts--;
+
+                            // Clear the terminal
+                            System.out.print(clear);
+                            System.out.flush();
+
                             System.out.println("Incorrect password, " + attempts + " attempts remaining.");
                             if (attempts == 0) {
 
@@ -138,17 +155,52 @@ public class UserAuth extends BankingApp {
              
                 
                 
+            } else {
+                System.out.println("User does not exist, please try again.");
             }
  
+        }
+        break;
+
             case 2: // Create Account
 
-            System.out.print("Please enter your Username: ");
-                    String newUsername = scanner.nextLine();
-                    System.out.println("Your username was set to " + newUsername);
+                    boolean usernamepicked = false;
+
+                    usernameInput = "";
+
+                    while (usernamepicked == false) {
+
+                    System.out.print("Please enter your Username: ");
+                    usernameInput = scanner.next(); 
+
+                    // newUsername = scanner.nextLine(); // Still cant figure out why i need to do this twice
+
+                    // Check if username already exists
+                    String checkQuery = "SELECT * FROM UserData WHERE Username = ?";
+                    PreparedStatement checkStatement = connection.prepareStatement(checkQuery);
+                    checkStatement.setString(1, usernameInput);
+                    ResultSet checkResult = checkStatement.executeQuery();
+
+                    if (checkResult.next()) {
+                        System.out.println("Username already exists, please choose another one.");
+                    } else {
+
+                        // Clear the terminal
+                        System.out.print(clear);
+                        System.out.flush();
+
+                        usernamepicked = true;
+                    }
+
+                    } // End ussernamepicked while loop
+
+                    
+                    
+                    System.out.println("Your username was set to " + usernameInput);
                     System.out.print("Please enter your password: ");
-                    String newPassword = scanner.nextLine();
+                    String newPassword = scanner.next();
                     System.out.print("Please enter your password again to confirm: ");
-                    String passwordConfirm = scanner.nextLine();
+                    String passwordConfirm = scanner.next();
 
                     boolean passwordMatch = newPassword.equals(passwordConfirm);
 
@@ -163,7 +215,7 @@ public class UserAuth extends BankingApp {
                     
                     String insertQuery = "INSERT INTO UserData (Username, Password) VALUES (?, ?)";
                     PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
-                    insertStatement.setString(1, newUsername);
+                    insertStatement.setString(1, usernameInput);
                     insertStatement.setString(2, newPassword);
                     insertStatement.executeUpdate();
                     System.out.println("Account created successfully, signing you in now!");
@@ -171,9 +223,11 @@ public class UserAuth extends BankingApp {
 
         }
 
-        } // End of authed while loop
+        if (authed == true) {
 
-        isloggedin = true;
+            isloggedin = true;
+        }
+    
 
         } catch (SQLException e) {
 
@@ -187,4 +241,14 @@ public class UserAuth extends BankingApp {
         
     
     }
+
+    public static boolean isLoggedIn() {
+        return isloggedin;
+    }
+
+    public static String getUsername() {
+        return usernameInput;
+    }
+    
 }
+
