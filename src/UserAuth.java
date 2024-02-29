@@ -169,7 +169,6 @@ public class UserAuth extends BankingApp {
                     System.out.println("Account created successfully, signing you in now!");
                     authed = true;
 
-
         }
 
         } // End of authed while loop
