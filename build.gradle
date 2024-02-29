@@ -30,3 +30,6 @@ task run(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     main = 'Compsci-IA/src'
 }
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
