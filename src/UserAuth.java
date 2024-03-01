@@ -1,3 +1,5 @@
+import com.password4j.Password;
+import com.password4j.Hash;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -7,6 +9,7 @@ import java.sql.ResultSet;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
+
 
 public class UserAuth extends BankingApp {
     
@@ -102,6 +105,10 @@ public class UserAuth extends BankingApp {
                 System.out.print("Please enter your password: ");
                 String passwordInput = scanner.next();
 
+                // Hash passwordInput before checking against database
+                Hash hash = Password.hash(passwordInput).addSalt(usernameInput).withArgon2();
+                passwordInput = hash.getResult();
+
                 String dbPassword = resultSet.getString("Password");
                 if (dbPassword.equals(passwordInput)) {
                     System.out.println("Password matched, signing you in...");
@@ -118,6 +125,10 @@ public class UserAuth extends BankingApp {
 
                         System.out.print("Please enter your Password: ");
                         passwordInput = scanner.nextLine();
+
+                        // Hash passwordInput before checking against database
+                        hash = Password.hash(passwordInput).addSalt(usernameInput).withArgon2();
+                        passwordInput = hash.getResult();
 
                         if (dbPassword.equals(passwordInput)) {
                             System.out.println("Password matched, signing you in...");
@@ -212,7 +223,14 @@ public class UserAuth extends BankingApp {
                         passwordConfirm = scanner.nextLine();
                         passwordMatch = newPassword.equals(passwordConfirm);
                     }
+
+
+                    // Hash the password
+                    Hash hash = Password.hash(newPassword).addSalt(usernameInput).withArgon2();
+                    newPassword = hash.getResult();                    
                     
+
+
                     String insertQuery = "INSERT INTO UserData (Username, Password) VALUES (?, ?)";
                     PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
                     insertStatement.setString(1, usernameInput);

@@ -159,7 +159,16 @@ public class BankingApp {
                     // Print new balance
                     if (newBalanceResult.next()) {
                         double newBalance = newBalanceResult.getDouble("Balance");
+
+                        // Clear terminal
+                        System.out.print(clear);
+                        System.out.flush();
+
+                        System.out.println(filler);
+                        System.out.println("Deposit successful! You deposited: $" + depositAmount);
                         System.out.println("Your new balance is: $" + newBalance);
+                        System.out.println(filler);
+                        
                     } else {
                         System.out.println("Failed to retrieve new balance.");
                     }
