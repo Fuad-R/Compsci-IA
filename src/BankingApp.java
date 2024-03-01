@@ -87,29 +87,20 @@ public class BankingApp {
             switch (action) {
                 case 1:
                     // Pull balance from database
-                    System.out.println("View Balance");
-                    String balanceQuery = "SELECT Balance FROM UserData WHERE Username = ?";
-                    PreparedStatement balanceStatement = connection.prepareStatement(balanceQuery);
-                    balanceStatement.setString(1, usernameInput);
-                    ResultSet balanceResult = balanceStatement.executeQuery();
 
-
+                    // Call the checkBalance method
+                    BankOperations bankOperations = new BankOperations();
+                    double returnedbalance = bankOperations.checkBalance(usernameInput);
+                
                     // Clear terminal
                     System.out.print(clear);
                     System.out.flush();
                     
-                    // Print balance
-                    if (balanceResult.next()) {
-
-                        double balance = balanceResult.getDouble("Balance");
                         System.out.println(filler);
                         System.out.println();
 
-                        System.out.println("Your current balance is: $" + balance);
+                        System.out.println("Your current balance is: $" + returnedbalance);
                         
-                    } else {
-                        System.out.println("Failed to retrieve balance.");
-                    }
 
                     // Decide what to do next
                     System.out.println();
@@ -123,8 +114,6 @@ public class BankingApp {
                         break;
                     }
 
-                    balanceResult.close();
-                    balanceStatement.close();
                     break;
 
                 case 2:
@@ -168,7 +157,7 @@ public class BankingApp {
                         System.out.println("Deposit successful! You deposited: $" + depositAmount);
                         System.out.println("Your new balance is: $" + newBalance);
                         System.out.println(filler);
-                        
+
                     } else {
                         System.out.println("Failed to retrieve new balance.");
                     }

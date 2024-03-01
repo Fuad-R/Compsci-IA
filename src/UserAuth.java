@@ -218,9 +218,9 @@ public class UserAuth extends BankingApp {
                     while (!passwordMatch) {
                         System.out.println("Passwords do not match, please try again");
                         System.out.print("Please enter your password: ");
-                        newPassword = scanner.nextLine();
+                        newPassword = scanner.next();
                         System.out.print("Please enter your password again to confirm: ");
-                        passwordConfirm = scanner.nextLine();
+                        passwordConfirm = scanner.next();
                         passwordMatch = newPassword.equals(passwordConfirm);
                     }
 
