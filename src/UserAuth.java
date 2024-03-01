@@ -104,13 +104,16 @@ public class UserAuth extends BankingApp {
                 // Ask for password input
                 System.out.print("Please enter your password: ");
                 String passwordInput = scanner.next();
-
-                // Hash passwordInput before checking against database
-                Hash hash = Password.hash(passwordInput).addSalt(usernameInput).withArgon2();
-                passwordInput = hash.getResult();
-
+           
                 String dbPassword = resultSet.getString("Password");
-                if (dbPassword.equals(passwordInput)) {
+
+                System.out.println(passwordInput);
+                System.out.println(dbPassword);
+
+                // Check hashed password
+                boolean result = Password.check(passwordInput, dbPassword).withArgon2();
+
+                if (result) {
                     System.out.println("Password matched, signing you in...");
                     authed = true;
 
@@ -126,11 +129,10 @@ public class UserAuth extends BankingApp {
                         System.out.print("Please enter your Password: ");
                         passwordInput = scanner.nextLine();
 
-                        // Hash passwordInput before checking against database
-                        hash = Password.hash(passwordInput).addSalt(usernameInput).withArgon2();
-                        passwordInput = hash.getResult();
+                        // Check hashed password
+                        result = Password.check(passwordInput, dbPassword).withArgon2();      
 
-                        if (dbPassword.equals(passwordInput)) {
+                        if (result) {
                             System.out.println("Password matched, signing you in...");
                             authed = true;
                             isloggedin = true;
@@ -194,6 +196,8 @@ public class UserAuth extends BankingApp {
 
                     if (checkResult.next()) {
                         System.out.println("Username already exists, please choose another one.");
+                        usernamepicked = false;
+                        
                     } else {
 
                         // Clear the terminal
@@ -219,17 +223,18 @@ public class UserAuth extends BankingApp {
                         System.out.println("Passwords do not match, please try again");
                         System.out.print("Please enter your password: ");
                         newPassword = scanner.next();
+                        
                         System.out.print("Please enter your password again to confirm: ");
                         passwordConfirm = scanner.next();
                         passwordMatch = newPassword.equals(passwordConfirm);
+
                     }
 
 
                     // Hash the password
-                    Hash hash = Password.hash(newPassword).addSalt(usernameInput).withArgon2();
-                    newPassword = hash.getResult();                    
+                    Hash hash = Password.hash(newPassword).addRandomSalt(32).withArgon2();
+                    newPassword = hash.getResult();                  
                     
-
 
                     String insertQuery = "INSERT INTO UserData (Username, Password) VALUES (?, ?)";
                     PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
