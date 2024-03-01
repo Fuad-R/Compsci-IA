@@ -101,13 +101,9 @@ public class BankingApp {
 
                         System.out.println("Your current balance is: $" + returnedbalance);
                         
-
-                    // Decide what to do next
-                    System.out.println();
-                    System.out.println(filler);
-                    System.out.println();
-                    System.out.print("Type 1 to return to the dashboard, or 2 to exit: ");
-
+                    
+                    AppDashboard.displayReturnDashboard();
+                    
                     exitDash = scanner.nextInt();
                     if (exitDash == 2) {
                         System.out.println("Exiting now, goodbye.");
