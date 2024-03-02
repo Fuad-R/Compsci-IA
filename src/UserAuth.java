@@ -20,7 +20,6 @@ public class UserAuth extends BankingApp {
         Scanner scanner = new Scanner(System.in);
 
         boolean authed = false;
-        String passPrompt = "Please enter your password: ";
 
         // Load Database credentials
         String url = "jdbc:mysql://192.168.1.70:3306/BankingDB";
@@ -37,6 +36,7 @@ public class UserAuth extends BankingApp {
         } catch (IOException e) {
             System.out.println("Error loading database credentials");
             e.printStackTrace();
+            return;
         }
 
         // Load MySQL JDBC Driver
@@ -81,7 +81,7 @@ public class UserAuth extends BankingApp {
 
             case 1: // Login
 
-            while (!authed) {
+            while (authed == false) {
 
             // Ask for username input
             System.out.print("Please enter your username: ");
@@ -102,7 +102,7 @@ public class UserAuth extends BankingApp {
                 System.out.println("User exists!");
 
                 // Ask for password input
-                System.out.print(passPrompt);
+                System.out.print("Please enter your password: ");
                 String passwordInput = scanner.next();
            
                 String dbPassword = resultSet.getString("Password");
@@ -181,7 +181,7 @@ public class UserAuth extends BankingApp {
 
                     usernameInput = "";
 
-                    while (!usernamepicked) {
+                    while (usernamepicked == false) {
 
                     System.out.print("Please enter your Username: ");
                     usernameInput = scanner.next(); 
@@ -212,7 +212,7 @@ public class UserAuth extends BankingApp {
                     
                     
                     System.out.println("Your username was set to " + usernameInput);
-                    System.out.print(passPrompt);
+                    System.out.print("Please enter your password: ");
                     String newPassword = scanner.next();
                     System.out.print("Please enter your password again to confirm: ");
                     String passwordConfirm = scanner.next();
@@ -221,7 +221,7 @@ public class UserAuth extends BankingApp {
 
                     while (!passwordMatch) {
                         System.out.println("Passwords do not match, please try again");
-                        System.out.print(passPrompt);
+                        System.out.print("Please enter your password: ");
                         newPassword = scanner.next();
                         
                         System.out.print("Please enter your password again to confirm: ");
@@ -244,20 +244,13 @@ public class UserAuth extends BankingApp {
                     System.out.println("Account created successfully, signing you in now!");
                     authed = true;
 
-                    break;
-                
-            default:
-
-                System.out.println("Invalid choice, please try again.");
-
         }
 
-        if (authed) {
+        if (authed == true) {
 
             isloggedin = true;
         }
     
-        scanner.close();
 
         } catch (SQLException e) {
 
@@ -265,6 +258,7 @@ public class UserAuth extends BankingApp {
             e.printStackTrace();
 
             scanner.close();
+            return;
         }
 
         

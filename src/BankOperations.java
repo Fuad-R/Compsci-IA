@@ -27,6 +27,7 @@ public class BankOperations extends BankingApp{
         } catch (IOException e) {
             System.out.println("Error loading database credentials");
             e.printStackTrace();
+            return;
         }
 
     }
@@ -34,7 +35,7 @@ public class BankOperations extends BankingApp{
     public static Double checkBalance(String usernameInput) {
 
         Double balance = 0.0;
-
+        
         try {
             Connection connection = DriverManager.getConnection(url, username, password);
         

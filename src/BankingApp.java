@@ -78,7 +78,8 @@ public class BankingApp {
             int action = 0;
 
             // Call the displayUserDashboard method
-            AppDashboard.displayUserDashboard(usernameInput);
+            AppDashboard appDashboard = new AppDashboard();
+            appDashboard.displayUserDashboard(usernameInput);
 
             // Ask for action
             action = scanner.nextInt();
@@ -95,9 +96,11 @@ public class BankingApp {
                     System.out.print(clear);
                     System.out.flush();
                     
-                    System.out.println(filler);
-                    System.out.println("Your current balance is: $" + returnedbalance);
-                    System.out.println(filler);
+                        System.out.println(filler);
+                        System.out.println();
+
+                        System.out.println("Your current balance is: $" + returnedbalance);
+                        
                     
                     AppDashboard.displayReturnDashboard();
                     
