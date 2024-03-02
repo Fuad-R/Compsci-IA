@@ -58,7 +58,12 @@ public class BankingApp {
             // Check if user is logged in
             boolean loggedInStatus = UserAuth.isLoggedIn();
 
-            while (loggedInStatus == false) {
+            //! *********************************************
+            //! HERE TO SPEED UP DEBUGGING ONLY, REMOVE AFTER
+            loggedInStatus = true;
+            //! *********************************************
+
+            while (!loggedInStatus) {
 
             // Call UserAuth class to display login dashboard
             UserAuth.loginmethod();
@@ -67,7 +72,11 @@ public class BankingApp {
 
             }
 
-            String usernameInput = UserAuth.getUsername();
+            //! *********************************************
+            //! HERE TO SPEED UP DEBUGGING ONLY, REMOVE AFTER
+            // String usernameInput = UserAuth.getUsername();
+            String usernameInput = "testuser";
+            //! *********************************************
 
             int exitDash = 1;
             
@@ -78,8 +87,7 @@ public class BankingApp {
             int action = 0;
 
             // Call the displayUserDashboard method
-            AppDashboard appDashboard = new AppDashboard();
-            appDashboard.displayUserDashboard(usernameInput);
+            AppDashboard.displayUserDashboard(usernameInput);
 
             // Ask for action
             action = scanner.nextInt();

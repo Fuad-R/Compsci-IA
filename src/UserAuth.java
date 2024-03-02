@@ -81,7 +81,7 @@ public class UserAuth extends BankingApp {
 
             case 1: // Login
 
-            while (authed == false) {
+            while (!authed) {
 
             // Ask for username input
             System.out.print("Please enter your username: ");
@@ -181,7 +181,7 @@ public class UserAuth extends BankingApp {
 
                     usernameInput = "";
 
-                    while (usernamepicked == false) {
+                    while (!usernamepicked) {
 
                     System.out.print("Please enter your Username: ");
                     usernameInput = scanner.next(); 
@@ -246,7 +246,7 @@ public class UserAuth extends BankingApp {
 
         }
 
-        if (authed == true) {
+        if (authed) {
 
             isloggedin = true;
         }
