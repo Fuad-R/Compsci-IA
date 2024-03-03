@@ -131,9 +131,73 @@ public class BankOperations extends BankingApp{
 
     }
 
-    public static void withdraw() {
+    public static String withdraw(String usernameInput) {
 
-        // Add withdraw method here
+        Scanner scanner = new Scanner(System.in);
+
+        try (FileInputStream fis = new FileInputStream("db.properties")) {
+            Properties props = new Properties();
+            props.load(fis);
+
+            username = props.getProperty("username");
+            password = props.getProperty("password");
+        } catch (IOException e) {
+            System.out.println("Error loading database credentials");
+            e.printStackTrace();
+        }
+
+        try {
+        Connection connection3 = DriverManager.getConnection(url, username, password);
+
+        // Clear terminal
+        System.out.println(clear);
+        System.out.flush();
+        
+        // Print withdraw menu message
+        System.out.println(filler);
+        System.out.println("Withdraw Menu");
+        System.out.println(filler);
+
+        // Ask for withdraw amount
+        System.out.print("Please enter the amount you would like to withdraw: ");
+        double withdrawAmount = scanner.nextDouble();
+
+        // Update balance in database
+        String withdrawQuery = "UPDATE UserData SET Balance = Balance - ? WHERE Username = ?";
+        PreparedStatement withdrawStatement = connection3.prepareStatement(withdrawQuery);
+        withdrawStatement.setDouble(1, withdrawAmount);
+        withdrawStatement.setString(2, usernameInput);
+        withdrawStatement.executeUpdate();
+
+        // Pull new balance to print
+        String newWithdrawQuery = "SELECT Balance FROM UserData WHERE Username = ?";
+        PreparedStatement newWithdrawStatement = connection3.prepareStatement(newWithdrawQuery);
+        newWithdrawStatement.setString(1, usernameInput);
+        ResultSet newWithdrawResult = newWithdrawStatement.executeQuery();
+
+        // Print new balance
+        if (newWithdrawResult.next()) {
+            double newBalance = newWithdrawResult.getDouble("Balance");
+
+            // Clear terminal
+            System.out.print(clear);
+            System.out.flush();
+
+            System.out.println(filler);
+            System.out.println("Withdrawal successful! You withdrew: $" + withdrawAmount);
+            System.out.println("Your new balance is: $" + newBalance);
+            System.out.println(filler);
+
+        } else {
+            System.out.println("Failed to retrieve new balance.");
+        }
+
+        } catch (SQLException e) {
+            System.out.println("Connection Failed! Check output console");
+            e.printStackTrace();
+        }
+
+        return "dummy";
 
     }
 

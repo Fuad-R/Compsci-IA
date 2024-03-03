@@ -142,57 +142,18 @@ public class BankingApp {
                 case 3:
 
                     // Clear terminal
-                    System.out.println(clear);
+                    System.out.print(clear);
                     System.out.flush();
+
+                    // Call the withdraw method
+                    BankOperations.withdraw(usernameInput);
+
+                    exitDash = AppDashboard.displayReturnDashboard();
                     
-                    // Print withdraw menu message
-                    System.out.println(filler);
-                    System.out.println("Withdraw Menu");
-                    System.out.println(filler);
-
-                    // Ask for withdraw amount
-                    System.out.print("Please enter the amount you would like to withdraw: ");
-                    double withdrawAmount = scanner.nextDouble();
-
-                    // Update balance in database
-                    String withdrawQuery = "UPDATE UserData SET Balance = Balance - ? WHERE Username = ?";
-                    PreparedStatement withdrawStatement = connection.prepareStatement(withdrawQuery);
-                    withdrawStatement.setDouble(1, withdrawAmount);
-                    withdrawStatement.setString(2, usernameInput);
-                    withdrawStatement.executeUpdate();
-
-                    // Pull new balance to print
-                    String newWithdrawQuery = "SELECT Balance FROM UserData WHERE Username = ?";
-                    PreparedStatement newWithdrawStatement = connection.prepareStatement(newWithdrawQuery);
-                    newWithdrawStatement.setString(1, usernameInput);
-                    ResultSet newWithdrawResult = newWithdrawStatement.executeQuery();
-
-                    // Print new balance
-                    if (newWithdrawResult.next()) {
-                        double newBalance = newWithdrawResult.getDouble("Balance");
-
-                        // Clear terminal
-                        System.out.print(clear);
-                        System.out.flush();
-
-                        System.out.println(filler);
-                        System.out.println("Withdrawal successful! You withdrew: $" + withdrawAmount);
-                        System.out.println("Your new balance is: $" + newBalance);
-                        System.out.println(filler);
-
-                    } else {
-                        System.out.println("Failed to retrieve new balance.");
+                    if (exitDash == 2) {
+                        System.out.println(exitMsg);
+                        break;
                     }
-
-                     // Decide what to do next
-                     System.out.println();
-                     System.out.print("Type 1 to return to the dashboard, or 2 to exit: ");
- 
-                     exitDash = scanner.nextInt();
-                     if (exitDash == 2) {
-                         System.out.println("Exiting now, goodbye.");
-                         break;
-                     }
 
                     break;
                 case 4:
