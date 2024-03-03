@@ -10,8 +10,8 @@ import java.util.Properties;
 public class BankingApp {
 
     //universal variables
-    public static final String filler = "-------------------------------------------------------------------";
-    public static final String clear = "\033[H\033[2J";
+    public static final String FILLER = "-------------------------------------------------------------------";
+    public static final String CLEAR = "\033[H\033[2J";
 
     public static void main(String[] args) {
         // Load Database credentials
@@ -55,17 +55,11 @@ public class BankingApp {
             System.out.println("\u001B[32mDatabase connection established!\u001B[0m");
 
             // Clear the terminal
-            System.out.print(clear);
+            System.out.print(CLEAR);
             System.out.flush();
           
             // Check if user is logged in
-            boolean loggedInStatus = UserAuth.isLoggedIn();
-
-            //! *********************************************
-            //! HERE TO SPEED UP DEBUGGING ONLY, REMOVE AFTER
-            //! loggedInStatus = true;
-            //! *********************************************
-
+            boolean loggedInStatus = false;
             while (!loggedInStatus) {
 
             // Call UserAuth class to display login dashboard
@@ -74,13 +68,7 @@ public class BankingApp {
             loggedInStatus = UserAuth.isLoggedIn();
 
             }
-
-            //! *********************************************
-            //! HERE TO SPEED UP DEBUGGING ONLY, REMOVE AFTER
             String usernameInput = UserAuth.getUsername();
-            //! String usernameInput = "testuser";
-            //! *********************************************
-
             int exitDash = 1;
             
             // Display dashboard
@@ -96,19 +84,18 @@ public class BankingApp {
             action = scanner.nextInt();
 
             // Clear terminal
-            System.out.print(clear);
+            System.out.print(CLEAR);
             System.out.flush();
 
             switch (action) {
                 case 1: // View Balance
                     
                     // Call the checkBalance method
-                    BankOperations bankOperations = new BankOperations();
-                    double returnedbalance = bankOperations.checkBalance(usernameInput);
+                    double returnedbalance = BankOperations.checkBalance(usernameInput);
                                     
-                    System.out.println(filler);
+                    System.out.println(FILLER);
                     System.out.println("Your current balance is: $" + returnedbalance);
-                    System.out.println(filler);
+                    System.out.println(FILLER);
                         
                     
                     exitDash = AppDashboard.displayReturnDashboard();
@@ -150,14 +137,14 @@ public class BankingApp {
                 case 4: // Transfer
 
                     // Clear terminal
-                    System.out.print(clear);
+                    System.out.print(CLEAR);
                     System.out.flush();
 
                     // Print transfer message
-                    System.out.println(filler);
+                    System.out.println(FILLER);
                     System.out.println("Transfer Menu");
                     System.out.println("Please note that a 1% fee will be charged for each transfer.");
-                    System.out.println(filler);
+                    System.out.println(FILLER);
 
 
                     // Ask for transfer amount
@@ -183,7 +170,7 @@ public class BankingApp {
                     } else {
 
                     // Clear terminal
-                    System.out.println(clear);
+                    System.out.println(CLEAR);
                     System.out.flush();
 
                     // Check if balance is sufficient
@@ -195,9 +182,9 @@ public class BankingApp {
                     if (checkBalanceResult.next()) {
                         double balance = checkBalanceResult.getDouble("Balance");
                         if (balance < transferAmount * 1.01) {
-                            System.out.println(filler);
+                            System.out.println(FILLER);
                             System.out.println("Insufficient funds, transfer cancelled.");
-                            System.out.println(filler);
+                            System.out.println(FILLER);
                             break;
                         }
                     } else {
@@ -211,15 +198,15 @@ public class BankingApp {
                     ResultSet checkRecipientResult = checkRecipientStatement.executeQuery();
 
                     if (!checkRecipientResult.next()) {
-                        System.out.println(filler);
+                        System.out.println(FILLER);
                         System.out.println("Recipient does not exist, transfer cancelled.");
-                        System.out.println(filler);
+                        System.out.println(FILLER);
                         break;
                     }
 
-                    System.out.println(filler);
+                    System.out.println(FILLER);
                     System.out.println("Transfer confirmed, processing now...");}
-                    System.out.println(filler);
+                    System.out.println(FILLER);
 
                     // Update balance in database with 1% fee
                     double transferAmountWithFee = transferAmount * 1.01; // Add 1% fee
@@ -256,13 +243,13 @@ public class BankingApp {
 
                      // Decide what to do next
                      System.out.println();
-                     System.out.println(filler);
+                     System.out.println(FILLER);
                      System.out.println();
                      System.out.print("Type 1 to return to the dashboard, or 2 to exit: ");
  
                      exitDash = scanner.nextInt();
                      if (exitDash == 2) {
-                         System.out.println("Exiting now, goodbye.");
+                         System.out.println(exitMsg);
                          break;
                      }
 
@@ -271,12 +258,12 @@ public class BankingApp {
                     System.out.println("Manage Account");
 
                     // Clear terminal
-                    System.out.print(clear);
+                    System.out.print(CLEAR);
                     System.out.flush();
 
-                    System.out.println(filler);
+                    System.out.println(FILLER);
                     System.out.println("Account Management Menu");
-                    System.out.println(filler);
+                    System.out.println(FILLER);
 
                     System.out.println("1. Change Password");
                     System.out.println("2. Delete Account");
@@ -286,14 +273,14 @@ public class BankingApp {
                     int accountAction = scanner.nextInt();
 
                     // Clear terminal
-                    System.out.print(clear);
+                    System.out.print(CLEAR);
                     System.out.flush();
 
                     switch (accountAction) {
                         case 1:
-                            System.out.println(filler);
+                            System.out.println(FILLER);
                             System.out.println("Password Change Menu");
-                            System.out.println(filler);
+                            System.out.println(FILLER);
                             System.out.println();
 
                             // Ask for old password
@@ -312,7 +299,7 @@ public class BankingApp {
                                 if (!storedPassword.equals(oldPassword)) {
 
                                     // Clear terminal
-                                    System.out.print(clear);
+                                    System.out.print(CLEAR);
                                     System.out.flush();
 
                                     // Print error message
@@ -391,7 +378,7 @@ public class BankingApp {
 
                     break;
                 case 6: // Exit
-                    System.out.println("Exiting now, goodbye.");
+                    System.out.println(exitMsg);
 
                     exitDash = 2;
 

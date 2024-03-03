@@ -57,13 +57,13 @@ public class UserAuth extends BankingApp {
             System.out.println("\u001B[32mDatabase connection established!\u001B[0m");
         
         // Clear the terminal
-        System.out.print(clear);
+        System.out.print(CLEAR);
         System.out.flush();           
 
         // Display login screen
-        System.out.println(filler);
+        System.out.println(FILLER);
         System.out.println("Welcome to the Banking App! Would you like to login or create an account?");
-        System.out.println(filler);
+        System.out.println(FILLER);
 
         System.out.println("1. Login");
         System.out.println("2. Create Account");
@@ -74,7 +74,7 @@ public class UserAuth extends BankingApp {
         int userChoice = scanner.nextInt();
 
         // Clear the terminal
-        System.out.print(clear);
+        System.out.print(CLEAR);
         System.out.flush();
 
         switch (userChoice) {
@@ -96,7 +96,7 @@ public class UserAuth extends BankingApp {
             if (resultSet.next()) {
 
                 // Clear the terminal
-                System.out.print(clear);
+                System.out.print(CLEAR);
                 System.out.flush();
 
                 System.out.println("User exists!");
@@ -144,20 +144,20 @@ public class UserAuth extends BankingApp {
                             attempts--;
 
                             // Clear the terminal
-                            System.out.print(clear);
+                            System.out.print(CLEAR);
                             System.out.flush();
 
                             System.out.println("Incorrect password, " + attempts + " attempts remaining.");
                             if (attempts == 0) {
 
                                 // Clear the terminal
-                                System.out.print(clear);
+                                System.out.print(CLEAR);
                                 System.out.flush();
 
-                                System.out.println(filler);
+                                System.out.println(FILLER);
                                 System.out.println("You have exceeded the maximum number of attempts.");
                                 System.out.println("Please try again later, or contact support if you believe this is a mistake.");
-                                System.out.println(filler);
+                                System.out.println(FILLER);
 
                                 return;
                             }
@@ -201,7 +201,7 @@ public class UserAuth extends BankingApp {
                     } else {
 
                         // Clear the terminal
-                        System.out.print(clear);
+                        System.out.print(CLEAR);
                         System.out.flush();
 
                         usernamepicked = true;

@@ -37,10 +37,20 @@ public class BankOperations extends BankingApp{
 
         Double balance = 0.0;
         
+        try (FileInputStream fis = new FileInputStream("db.properties")) {
+            Properties props = new Properties();
+            props.load(fis);
+
+            username = props.getProperty("username");
+            password = props.getProperty("password");
+        } catch (IOException e) {
+            System.out.println("Error loading database credentials");
+            e.printStackTrace();
+        }
+
         try {
             Connection connection = DriverManager.getConnection(url, username, password);
         
-            System.out.println("View Balance");
             String balanceQuery = "SELECT Balance FROM UserData WHERE Username = ?";
             PreparedStatement balanceStatement = connection.prepareStatement(balanceQuery);
             balanceStatement.setString(1, usernameInput);
@@ -78,14 +88,14 @@ public class BankOperations extends BankingApp{
         try {
         Connection connection2 = DriverManager.getConnection(url, username, password);
 
-        System.out.println(filler);
+        System.out.println(FILLER);
         System.out.println("Depositing Menu");
-        System.out.println(filler);
+        System.out.println(FILLER);
 
         // Ask for deposit amount
         System.out.print("Please enter the amount you would like to deposit: ");
         double depositAmount = scanner.nextDouble();
-        scanner.close();
+        ///scanner.close();
 
         // Update balance in database
         String depositQuery = "UPDATE UserData SET Balance = Balance + ? WHERE Username = ?";
@@ -107,13 +117,13 @@ public class BankOperations extends BankingApp{
             double newBalance = newBalanceResult.getDouble("Balance");
 
             // Clear terminal
-            System.out.print(clear);
+            System.out.print(CLEAR);
             System.out.flush();
 
-            System.out.println(filler);
+            System.out.println(FILLER);
             System.out.println("Deposit successful! You deposited: $" + depositAmount);
             System.out.println("Your new balance is: $" + newBalance);
-            System.out.println(filler);
+            System.out.println(FILLER);
 
         } else {
             System.out.println("Failed to retrieve new balance.");
@@ -147,9 +157,9 @@ public class BankOperations extends BankingApp{
         Connection connection3 = DriverManager.getConnection(url, username, password);
         
         // Print withdraw menu message
-        System.out.println(filler);
+        System.out.println(FILLER);
         System.out.println("Withdraw Menu");
-        System.out.println(filler);
+        System.out.println(FILLER);
 
         // Ask for withdraw amount
         System.out.print("Please enter the amount you would like to withdraw: ");
@@ -174,13 +184,13 @@ public class BankOperations extends BankingApp{
             double newBalance = newWithdrawResult.getDouble("Balance");
 
             // Clear terminal
-            System.out.print(clear);
+            System.out.print(CLEAR);
             System.out.flush();
 
-            System.out.println(filler);
+            System.out.println(FILLER);
             System.out.println("Withdrawal successful! You withdrew: $" + withdrawAmount);
             System.out.println("Your new balance is: $" + newBalance);
-            System.out.println(filler);
+            System.out.println(FILLER);
 
         } else {
             System.out.println("Failed to retrieve new balance.");
