@@ -95,21 +95,20 @@ public class BankingApp {
             // Ask for action
             action = scanner.nextInt();
 
-            switch (action) {
-                case 1:
-                    // Pull balance from database
+            // Clear terminal
+            System.out.print(clear);
+            System.out.flush();
 
+            switch (action) {
+                case 1: // View Balance
+                    
                     // Call the checkBalance method
                     BankOperations bankOperations = new BankOperations();
                     double returnedbalance = bankOperations.checkBalance(usernameInput);
-                
-                    // Clear terminal
-                    System.out.print(clear);
-                    System.out.flush();
-                    
-                        System.out.println(filler);
-                        System.out.println("Your current balance is: $" + returnedbalance);
-                        System.out.println(filler);
+                                    
+                    System.out.println(filler);
+                    System.out.println("Your current balance is: $" + returnedbalance);
+                    System.out.println(filler);
                         
                     
                     exitDash = AppDashboard.displayReturnDashboard();
@@ -121,12 +120,8 @@ public class BankingApp {
 
                     break;
 
-                case 2:
+                case 2: // Deposit
 
-                // Clear terminal
-                System.out.println(clear);
-                System.out.flush();
-                
                 // Call the deposit method
                 BankOperations.deposit(usernameInput);
 
@@ -139,11 +134,7 @@ public class BankingApp {
                    
                 break;
 
-                case 3:
-
-                    // Clear terminal
-                    System.out.print(clear);
-                    System.out.flush();
+                case 3: // Withdraw
 
                     // Call the withdraw method
                     BankOperations.withdraw(usernameInput);
@@ -156,7 +147,7 @@ public class BankingApp {
                     }
 
                     break;
-                case 4:
+                case 4: // Transfer
 
                     // Clear terminal
                     System.out.print(clear);
@@ -276,7 +267,7 @@ public class BankingApp {
                      }
 
                     break;
-                case 5:
+                case 5: // Manage Account
                     System.out.println("Manage Account");
 
                     // Clear terminal
@@ -399,13 +390,13 @@ public class BankingApp {
                     }
 
                     break;
-                case 6:
+                case 6: // Exit
                     System.out.println("Exiting now, goodbye.");
 
                     exitDash = 2;
 
                     break;
-                default:
+                default:// Invalid action
                     System.out.println("Invalid action, returning to dashboard.");
                     break;
             }
