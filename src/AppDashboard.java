@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class AppDashboard extends BankOperations{
         
     public static void displayUserDashboard(String usernameInput) {
@@ -26,13 +28,14 @@ public class AppDashboard extends BankOperations{
 
     }
 
-    public static void displayReturnDashboard() {
+    public static int displayReturnDashboard() {
 
+        Scanner scanner = new Scanner(System.in);
         // Decide what to do next
         System.out.println();
         System.out.println(filler);
         System.out.println();
         System.out.print("Type 1 to return to the dashboard, or 2 to exit: ");
-
+        return scanner.nextInt();
     }
 }

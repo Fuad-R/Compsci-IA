@@ -60,7 +60,7 @@ public class BankingApp {
 
             //! *********************************************
             //! HERE TO SPEED UP DEBUGGING ONLY, REMOVE AFTER
-            loggedInStatus = true;
+            //! loggedInStatus = true;
             //! *********************************************
 
             while (!loggedInStatus) {
@@ -74,8 +74,8 @@ public class BankingApp {
 
             //! *********************************************
             //! HERE TO SPEED UP DEBUGGING ONLY, REMOVE AFTER
-            // String usernameInput = UserAuth.getUsername();
-            String usernameInput = "testuser";
+            String usernameInput = UserAuth.getUsername();
+            //! String usernameInput = "testuser";
             //! *********************************************
 
             int exitDash = 1;
@@ -110,9 +110,8 @@ public class BankingApp {
                         System.out.println("Your current balance is: $" + returnedbalance);
                         
                     
-                    AppDashboard.displayReturnDashboard();
+                    exitDash = AppDashboard.displayReturnDashboard();
                     
-                    exitDash = scanner.nextInt();
                     if (exitDash == 2) {
                         System.out.println("Exiting now, goodbye.");
                         break;
