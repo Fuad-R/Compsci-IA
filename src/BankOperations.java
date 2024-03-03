@@ -60,7 +60,7 @@ public class BankOperations extends BankingApp{
     
     }
 
-    public static void deposit(String usernameInput) {
+    public static String deposit(String usernameInput) {
 
         Scanner scanner = new Scanner(System.in);
 
@@ -89,8 +89,6 @@ public class BankOperations extends BankingApp{
         // Ask for deposit amount
         System.out.print("Please enter the amount you would like to deposit: ");
         double depositAmount = scanner.nextDouble();
-
-        scanner.close();
 
         // Update balance in database
         String depositQuery = "UPDATE UserData SET Balance = Balance + ? WHERE Username = ?";
@@ -128,6 +126,8 @@ public class BankOperations extends BankingApp{
             System.out.println("Connection Failed! Check output console");
             e.printStackTrace();
         }
+
+        return "dummy";
 
     }
 

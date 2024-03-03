@@ -32,9 +32,7 @@ public class AppDashboard extends BankOperations{
 
         Scanner scanner = new Scanner(System.in);
         // Decide what to do next
-        System.out.println();
-        System.out.println(filler);
-        System.out.println();
+
         System.out.print("Type 1 to return to the dashboard, or 2 to exit: ");
         return scanner.nextInt();
     }

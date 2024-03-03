@@ -19,6 +19,9 @@ public class BankingApp {
         String username = "";
         String password = "";
 
+        // Define common strings to avoid repetition
+        String exitMsg = "Exiting now, goodbye.";
+
         // Load credentials from properties file
         try (FileInputStream fis = new FileInputStream("db.properties")) {
             Properties props = new Properties();
@@ -105,15 +108,14 @@ public class BankingApp {
                     System.out.flush();
                     
                         System.out.println(filler);
-                        System.out.println();
-
                         System.out.println("Your current balance is: $" + returnedbalance);
+                        System.out.println(filler);
                         
                     
                     exitDash = AppDashboard.displayReturnDashboard();
                     
                     if (exitDash == 2) {
-                        System.out.println("Exiting now, goodbye.");
+                        System.out.println(exitMsg);
                         break;
                     }
 
@@ -121,63 +123,22 @@ public class BankingApp {
 
                 case 2:
 
-                    // Clear terminal
-                    System.out.print(clear);
-                    System.out.flush();
+                // Clear terminal
+                System.out.println(clear);
+                System.out.flush();
+                
+                // Call the deposit method
+                BankOperations.deposit(usernameInput);
 
-                    System.out.println(filler);
-                    System.out.println("Depositing Menu");
-                    System.out.println(filler);
-
-                    // Ask for deposit amount
-                    System.out.print("Please enter the amount you would like to deposit: ");
-                    double depositAmount = scanner.nextDouble();
-
-                    // Update balance in database
-                    String depositQuery = "UPDATE UserData SET Balance = Balance + ? WHERE Username = ?";
-                    PreparedStatement depositStatement = connection.prepareStatement(depositQuery);
-                    depositStatement.setDouble(1, depositAmount);
-                    depositStatement.setString(2, usernameInput);
-                    depositStatement.executeUpdate();
-
-                    // Pull new balance to print
-                    String newBalanceQuery = "SELECT Balance FROM UserData WHERE Username = ?";
-                    PreparedStatement newBalanceStatement = connection.prepareStatement(newBalanceQuery);
-                    newBalanceStatement.setString(1, usernameInput);
-                    ResultSet newBalanceResult = newBalanceStatement.executeQuery();
+                exitDash = AppDashboard.displayReturnDashboard();
                     
-                    System.out.println();
-
-                    // Print new balance
-                    if (newBalanceResult.next()) {
-                        double newBalance = newBalanceResult.getDouble("Balance");
-
-                        // Clear terminal
-                        System.out.print(clear);
-                        System.out.flush();
-
-                        System.out.println(filler);
-                        System.out.println("Deposit successful! You deposited: $" + depositAmount);
-                        System.out.println("Your new balance is: $" + newBalance);
-                        System.out.println(filler);
-
-                    } else {
-                        System.out.println("Failed to retrieve new balance.");
-                    }
-
-                     // Decide what to do next
-                     System.out.println();
-                     System.out.println(filler);
-                     System.out.println();
-                     System.out.print("Type 1 to return to the dashboard, or 2 to exit: ");
- 
-                     exitDash = scanner.nextInt();
-                     if (exitDash == 2) {
-                         System.out.println("Exiting now, goodbye.");
-                         break;
-                     }
-                    
+                if (exitDash == 2) {
+                    System.out.println(exitMsg);
                     break;
+                }
+                   
+                break;
+
                 case 3:
 
                     // Clear terminal
