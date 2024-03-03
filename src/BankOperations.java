@@ -78,10 +78,6 @@ public class BankOperations extends BankingApp{
         try {
         Connection connection2 = DriverManager.getConnection(url, username, password);
 
-        // Clear terminal
-        System.out.print(clear);
-        System.out.flush();
-
         System.out.println(filler);
         System.out.println("Depositing Menu");
         System.out.println(filler);
@@ -89,6 +85,7 @@ public class BankOperations extends BankingApp{
         // Ask for deposit amount
         System.out.print("Please enter the amount you would like to deposit: ");
         double depositAmount = scanner.nextDouble();
+        scanner.close();
 
         // Update balance in database
         String depositQuery = "UPDATE UserData SET Balance = Balance + ? WHERE Username = ?";
@@ -148,10 +145,6 @@ public class BankOperations extends BankingApp{
 
         try {
         Connection connection3 = DriverManager.getConnection(url, username, password);
-
-        // Clear terminal
-        System.out.println(clear);
-        System.out.flush();
         
         // Print withdraw menu message
         System.out.println(filler);
@@ -161,6 +154,7 @@ public class BankOperations extends BankingApp{
         // Ask for withdraw amount
         System.out.print("Please enter the amount you would like to withdraw: ");
         double withdrawAmount = scanner.nextDouble();
+        scanner.close();
 
         // Update balance in database
         String withdrawQuery = "UPDATE UserData SET Balance = Balance - ? WHERE Username = ?";
@@ -201,9 +195,12 @@ public class BankOperations extends BankingApp{
 
     }
 
-    public static void transfer() {
+    public static String transfer() {
 
-        // Add transfer method here
+       
+
+        
+        return "dummy";
 
     }
 
