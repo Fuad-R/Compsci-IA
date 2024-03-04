@@ -164,6 +164,10 @@ public class BankOperations extends BankingApp{
         double withdrawAmount = scanner.nextDouble();
         // scanner.close();
 
+        //! *****************************************************
+        //! ****** Add check for sufficient funds here **********
+        //! *****************************************************
+
         // Update balance in database
         String withdrawQuery = "UPDATE UserData SET Balance = Balance - ? WHERE Username = ?";
         PreparedStatement withdrawStatement = connection3.prepareStatement(withdrawQuery);
@@ -239,13 +243,24 @@ public class BankOperations extends BankingApp{
                 recipientUsername = scanner.nextLine(); // No idea why this is needed, but it is
                 System.out.println();
 
+                // Clear terminal
+                System.out.print(CLEAR);
+                System.out.flush();
+
                 // Print transfer info message
+                System.out.println(FILLER);
                 System.out.println("The total fee for this transfer will be: $" + transferAmount * 0.01);
                 System.out.println("The total amount to be deducted from your account will be: $" + transferAmount * 1.01);
+                System.out.println(FILLER);
                 System.out.print("Please confirm the transfer by entering \u001B[32mY\u001B[0m or \u001B[31mN\u001B[0m: ");
                 String confirmTransfer = scanner.nextLine();
 
                 if (confirmTransfer.equals("N") || confirmTransfer.equals("n")) {
+
+                    // Clear terminal
+                    System.out.print(CLEAR);
+                    System.out.flush();
+
                     System.out.println("Transfer cancelled, returning to dashboard.");
                     break;
                 } else {
@@ -263,12 +278,22 @@ public class BankOperations extends BankingApp{
                 if (checkBalanceResult.next()) {
                     double balance = checkBalanceResult.getDouble("Balance");
                     if (balance < transferAmount * 1.01) {
+
+                        // Clear terminal
+                        System.out.print(CLEAR);
+                        System.out.flush();
+
                         System.out.println(FILLER);
                         System.out.println("Insufficient funds, transfer cancelled.");
                         System.out.println(FILLER);
                         break;
                     }
                 } else {
+
+                    // Clear terminal
+                    System.out.print(CLEAR);
+                    System.out.flush();
+
                     System.out.println("Failed to retrieve balance.");
                 }
 
@@ -279,6 +304,11 @@ public class BankOperations extends BankingApp{
                 ResultSet checkRecipientResult = checkRecipientStatement.executeQuery();
 
                 if (!checkRecipientResult.next()) {
+
+                    // Clear terminal
+                    System.out.print(CLEAR);
+                    System.out.flush();
+
                     System.out.println(FILLER);
                     System.out.println("Recipient does not exist, transfer cancelled.");
                     System.out.println(FILLER);
@@ -304,7 +334,12 @@ public class BankOperations extends BankingApp{
                 recipientStatement.setString(2, recipientUsername);
                 recipientStatement.executeUpdate();
 
+                // Clear the terminal
+                System.out.print(CLEAR);
+                System.out.flush();
+
                 // Confirm transfer
+                System.out.println(FILLER);
                 System.out.println("Transfer of $" + transferAmount + " to " + recipientUsername + " was successful!");
 
                 // Pull new balance to print
@@ -317,7 +352,13 @@ public class BankOperations extends BankingApp{
                 if (newTransferResult.next()) {
                     double newBalance = newTransferResult.getDouble("Balance");
                     System.out.println("Your new balance is: $" + newBalance);
+                    System.out.println(FILLER);
                 } else {
+
+                    // Clear terminal
+                    System.out.print(CLEAR);
+                    System.out.flush();
+
                     System.out.println("Failed to retrieve new balance.");
                 }
                 transfercomplete = true;

@@ -14,6 +14,7 @@ public class BankingApp {
     public static final String CLEAR = "\033[H\033[2J";
 
     public static void main(String[] args) {
+        
         // Load Database credentials
         String url = "jdbc:mysql://192.168.1.70:3306/BankingDB";
         String username = "";
@@ -105,7 +106,7 @@ public class BankingApp {
                         break;
                     }
 
-                    break;
+                break;
 
                 case 2: // Deposit
 
@@ -133,7 +134,8 @@ public class BankingApp {
                         break;
                     }
 
-                    break;
+                break;
+
                 case 4: // Transfer
 
                     // Call the transfer method
@@ -141,13 +143,14 @@ public class BankingApp {
                     
 
                     exitDash = AppDashboard.displayReturnDashboard();
-                    
+
                     if (exitDash == 2) {
                         System.out.println(exitMsg);
                         break;
                     }
 
-                    break;
+                break;
+
                 case 5: // Manage Account
                     System.out.println("Manage Account");
 
