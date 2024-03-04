@@ -390,10 +390,6 @@ public class BankingApp {
             
         }
 
-        
-            //Close remaining operations
-//            resultSet.close();
-//            statement.close();
             connection.close();
 
         } catch (SQLException e) {

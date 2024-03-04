@@ -257,8 +257,7 @@ public class UserAuth extends BankingApp {
             System.out.println("\u001B[31mConnection failed! Check output console\u001B[0m");
             e.printStackTrace();
 
-            scanner.close();
-            return;
+            //scanner.close();
         }
 
         
