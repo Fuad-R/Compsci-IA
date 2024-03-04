@@ -136,122 +136,16 @@ public class BankingApp {
                     break;
                 case 4: // Transfer
 
-                    // Clear terminal
-                    System.out.print(CLEAR);
-                    System.out.flush();
+                    // Call the transfer method
+                    BankOperations.transfer(usernameInput);
+                    
 
-                    // Print transfer message
-                    System.out.println(FILLER);
-                    System.out.println("Transfer Menu");
-                    System.out.println("Please note that a 1% fee will be charged for each transfer.");
-                    System.out.println(FILLER);
-
-
-                    // Ask for transfer amount
-                    System.out.print("Please enter the amount you would like to transfer: ");
-                    double transferAmount = scanner.nextDouble();
-                    System.out.println();
-
-                    // Ask for recipient username
-                    System.out.print("Please enter the recipient's username: ");
-                    String recipientUsername = scanner.nextLine();
-                    recipientUsername = scanner.nextLine(); // No idea why this is needed, but it is
-                    System.out.println();
-
-                    // Print transfer info message
-                    System.out.println("The total fee for this transfer will be: $" + transferAmount * 0.01);
-                    System.out.println("The total amount to be deducted from your account will be: $" + transferAmount * 1.01);
-                    System.out.print("Please confirm the transfer by entering \u001B[32mY\u001B[0m or \u001B[31mN\u001B[0m: ");
-                    String confirmTransfer = scanner.nextLine();
-
-                    if (confirmTransfer.equals("N") || confirmTransfer.equals("n")) {
-                        System.out.println("Transfer cancelled, returning to dashboard.");
-                        break;
-                    } else {
-
-                    // Clear terminal
-                    System.out.println(CLEAR);
-                    System.out.flush();
-
-                    // Check if balance is sufficient
-                    String checkBalanceQuery = "SELECT Balance FROM UserData WHERE Username = ?";
-                    PreparedStatement checkBalanceStatement = connection.prepareStatement(checkBalanceQuery);
-                    checkBalanceStatement.setString(1, usernameInput);
-                    ResultSet checkBalanceResult = checkBalanceStatement.executeQuery();
-
-                    if (checkBalanceResult.next()) {
-                        double balance = checkBalanceResult.getDouble("Balance");
-                        if (balance < transferAmount * 1.01) {
-                            System.out.println(FILLER);
-                            System.out.println("Insufficient funds, transfer cancelled.");
-                            System.out.println(FILLER);
-                            break;
-                        }
-                    } else {
-                        System.out.println("Failed to retrieve balance.");
-                    }
-
-                    // Check if recipient exists
-                    String checkRecipientQuery = "SELECT * FROM UserData WHERE Username = ?";
-                    PreparedStatement checkRecipientStatement = connection.prepareStatement(checkRecipientQuery);
-                    checkRecipientStatement.setString(1, recipientUsername);
-                    ResultSet checkRecipientResult = checkRecipientStatement.executeQuery();
-
-                    if (!checkRecipientResult.next()) {
-                        System.out.println(FILLER);
-                        System.out.println("Recipient does not exist, transfer cancelled.");
-                        System.out.println(FILLER);
+                    exitDash = AppDashboard.displayReturnDashboard();
+                    
+                    if (exitDash == 2) {
+                        System.out.println(exitMsg);
                         break;
                     }
-
-                    System.out.println(FILLER);
-                    System.out.println("Transfer confirmed, processing now...");}
-                    System.out.println(FILLER);
-
-                    // Update balance in database with 1% fee
-                    double transferAmountWithFee = transferAmount * 1.01; // Add 1% fee
-                    String transferQuery = "UPDATE UserData SET Balance = Balance - ? WHERE Username = ?";
-                    PreparedStatement transferStatement = connection.prepareStatement(transferQuery);
-                    transferStatement.setDouble(1, transferAmountWithFee);
-                    transferStatement.setString(2, usernameInput);
-                    transferStatement.executeUpdate();
-
-                    // Update recipient balance in database
-                    String recipientQuery = "UPDATE UserData SET Balance = Balance + ? WHERE Username = ?";
-                    PreparedStatement recipientStatement = connection.prepareStatement(recipientQuery);
-                    recipientStatement.setDouble(1, transferAmount);
-                    recipientStatement.setString(2, recipientUsername);
-                    recipientStatement.executeUpdate();
-
-                    // Confirm transfer
-                    System.out.println("Transfer of $" + transferAmount + " to " + recipientUsername + " was successful!");
-                    System.out.println();
-
-                    // Pull new balance to print
-                    String newTransferQuery = "SELECT Balance FROM UserData WHERE Username = ?";
-                    PreparedStatement newTransferStatement = connection.prepareStatement(newTransferQuery);
-                    newTransferStatement.setString(1, usernameInput);
-                    ResultSet newTransferResult = newTransferStatement.executeQuery();
-
-                    // Print new balance
-                    if (newTransferResult.next()) {
-                        double newBalance = newTransferResult.getDouble("Balance");
-                        System.out.println("Your new balance is: $" + newBalance);
-                    } else {
-                        System.out.println("Failed to retrieve new balance.");
-                    }
-
-                     // Decide what to do next
-                     System.out.println();
-                     System.out.println(FILLER);
-                     System.out.println();
-                     System.out.print("Type 1 to return to the dashboard, or 2 to exit: ");
- 
-                     exitDash = scanner.nextInt();
-                     if (exitDash == 2) {
-                         System.out.println(exitMsg);
-                         break;
-                     }
 
                     break;
                 case 5: // Manage Account
