@@ -12,7 +12,7 @@ public class BankOperations extends BankingApp{
 
 
     // Load Database credentials
-        static String url = "jdbc:mysql://192.168.1.70:3306/BankingDB";
+        static String url = "";
         static String username = "";
         static String password = "";
 
@@ -43,6 +43,7 @@ public class BankOperations extends BankingApp{
 
             username = props.getProperty("username");
             password = props.getProperty("password");
+            url = props.getProperty("url");
         } catch (IOException e) {
             System.out.println("Error loading database credentials");
             e.printStackTrace();
@@ -80,6 +81,7 @@ public class BankOperations extends BankingApp{
 
             username = props.getProperty("username");
             password = props.getProperty("password");
+            url = props.getProperty("url");
         } catch (IOException e) {
             System.out.println("Error loading database credentials");
             e.printStackTrace();
@@ -146,6 +148,7 @@ public class BankOperations extends BankingApp{
 
             username = props.getProperty("username");
             password = props.getProperty("password");
+            url = props.getProperty("url");
         } catch (IOException e) {
             System.out.println("Error loading database credentials");
             e.printStackTrace();
@@ -216,6 +219,7 @@ public class BankOperations extends BankingApp{
 
             username = props.getProperty("username");
             password = props.getProperty("password");
+            url = props.getProperty("url");
         } catch (IOException e) {
             System.out.println("Error loading database credentials");
             e.printStackTrace();

@@ -16,7 +16,7 @@ public class BankingApp {
     public static void main(String[] args) {
         
         // Load Database credentials
-        String url = "jdbc:mysql://192.168.1.70:3306/BankingDB";
+        String url = "";
         String username = "";
         String password = "";
 
@@ -30,6 +30,7 @@ public class BankingApp {
 
             username = props.getProperty("username");
             password = props.getProperty("password");
+            url = props.getProperty("url");
         } catch (IOException e) {
             System.out.println("Error loading database credentials");
             e.printStackTrace();
