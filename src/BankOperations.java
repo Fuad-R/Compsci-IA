@@ -205,7 +205,7 @@ public class BankOperations extends BankingApp{
 
     }
 
-    public static boolean transfer(String usernameInput) {
+    public static void transfer(String usernameInput) {
 
         boolean transfercomplete = false;
         Scanner scanner = new Scanner(System.in);
@@ -368,7 +368,7 @@ public class BankOperations extends BankingApp{
             e.printStackTrace();
         }
         
-        return transfercomplete;
+        return;
 
     }
 
