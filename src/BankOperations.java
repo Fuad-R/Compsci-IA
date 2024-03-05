@@ -2,6 +2,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Scanner;
+
+import com.password4j.Hash;
+import com.password4j.Password;
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -376,10 +380,107 @@ public class BankOperations extends BankingApp{
 
     }
 
-    public static void manageaccount() {
+    public static void changePassword(String usernameInput) {
 
-        // Add account managment method here
+        Scanner scanner = new Scanner(System.in);
 
+        try (FileInputStream fis = new FileInputStream("db.properties")) {
+            Properties props = new Properties();
+            props.load(fis);
+
+            username = props.getProperty("username");
+            password = props.getProperty("password");
+            url = props.getProperty("url");
+        } catch (IOException e) {
+            System.out.println("Error loading database credentials");
+            e.printStackTrace();
+        }
+
+        boolean actionDone = false;
+
+            try {
+                while (!actionDone){
+                Connection connection6 = DriverManager.getConnection(url, username, password);           
+
+                System.out.println(FILLER);
+                System.out.println("Password Change Menu");
+                System.out.println(FILLER);
+
+                // Ask for old password
+                System.out.print("Please enter your old password: ");
+                String oldPassword = scanner.next();
+
+                // Get password of user from database
+                String passwordQuery = "SELECT Password FROM UserData WHERE Username = ?";
+                PreparedStatement passwordStatement = connection6.prepareStatement(passwordQuery);
+                passwordStatement.setString(1, usernameInput);
+                ResultSet resultSet = passwordStatement.executeQuery();
+                resultSet.next();
+
+                // Set password from database to dbPassword
+                String dbPassword = resultSet.getString("Password");
+
+
+                // Check if old password matches
+                boolean result = Password.check(oldPassword, dbPassword).withArgon2();
+
+                if (!result) {
+
+                    // Clear terminal
+                    System.out.print(CLEAR);
+                    System.out.flush();
+
+                    // Print error message
+                    System.out.println("Incorrect old password. Password change cancelled.");
+                    System.out.print("Press enter to return to dashboard:");
+                    scanner.nextLine();
+                    actionDone = false;
+
+                    break;
+                    }
+
+                // Flush the terminal
+                System.out.print(CLEAR);
+                System.out.flush();
+
+                System.out.print("Password matched, please enter your new password: ");
+                String newPassword = scanner.next();
+
+                System.out.print("Please enter your new password again to confirm: ");
+                String passwordConfirm = scanner.nextLine();
+                passwordConfirm = scanner.next();
+
+                boolean passwordMatch = newPassword.equals(passwordConfirm);
+
+                while (!passwordMatch) {
+                    System.out.println("Passwords do not match, please try again");
+                    System.out.print("Please enter your new password: ");
+                    newPassword = scanner.nextLine();
+                    System.out.print("Please enter your new password again to confirm: ");
+                    passwordConfirm = scanner.nextLine();
+                    passwordMatch = newPassword.equals(passwordConfirm);
+                }
+
+                // Hash the new password
+                Hash hash = Password.hash(newPassword).addRandomSalt(32).withArgon2();
+                newPassword = hash.getResult();
+
+                // Update password in database
+                String passwordChangeQuery = "UPDATE UserData SET Password = ? WHERE Username = ?";
+                PreparedStatement passwordChangeStatement = connection6.prepareStatement(passwordChangeQuery);
+                passwordChangeStatement.setString(1, newPassword);
+                passwordChangeStatement.setString(2, usernameInput);
+                passwordChangeStatement.executeUpdate();
+
+                // Clear the terminal
+                System.out.print(CLEAR);
+                System.out.flush();
+
+                actionDone = true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Connection Failed! Check output console");
+            e.printStackTrace();
+        }
     } 
-
 }
