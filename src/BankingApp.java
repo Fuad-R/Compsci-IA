@@ -166,7 +166,7 @@ public class BankingApp {
 
                     switch (accountAction) {
                         case 1:
-                        
+
                             // Call the changepassword method
                             BankOperations.changePassword(usernameInput);
                             
@@ -182,25 +182,9 @@ public class BankingApp {
                             break;
 
                         case 2:
-                            System.out.println("Delete Account");
 
-                            // Ask for confirmation
-                            System.out.print("Are you sure you want to delete your account? (\u001B[32mY\u001B[0m/\u001B[31mN\u001B[0m): ");
-                            String deleteAccount = scanner.nextLine();
-                            deleteAccount = scanner.nextLine(); // No idea why this is needed, but it is
-
-                            if (deleteAccount.equals("Y") || deleteAccount.equals("y")) {
-                                // Delete account from database
-                                String deleteQuery = "DELETE FROM UserData WHERE Username = ?";
-                                PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery);
-                                deleteStatement.setString(1, usernameInput);
-                                deleteStatement.executeUpdate();
-
-                                System.out.println("Account deleted successfully!");
-                                exitDash = 2;
-                            } else {
-                                System.out.println("Account deletion cancelled, returning to dashboard.");
-                            }
+                            // Call deleteaccount method
+                            exitDash = BankOperations.deleteAccount(usernameInput);
 
                             break;
                         case 3:

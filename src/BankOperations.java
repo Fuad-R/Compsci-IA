@@ -483,4 +483,52 @@ public class BankOperations extends BankingApp{
             e.printStackTrace();
         }
     } 
+
+    public static int deleteAccount(String usernameInput) {
+
+            Scanner scanner = new Scanner(System.in);
+    
+            try (FileInputStream fis = new FileInputStream("db.properties")) {
+                Properties props = new Properties();
+                props.load(fis);
+    
+                username = props.getProperty("username");
+                password = props.getProperty("password");
+                url = props.getProperty("url");
+            } catch (IOException e) {
+                System.out.println("Error loading database credentials");
+                e.printStackTrace();
+            }
+    
+            int exitDash = 1;
+
+                try {
+                    
+                    Connection connection7 = DriverManager.getConnection(url, username, password);
+
+                    // Ask for confirmation
+                    System.out.print("Are you sure you want to delete your account? (\u001B[32mY\u001B[0m/\u001B[31mN\u001B[0m): ");
+                    String deleteAccount = scanner.next();
+
+                    if (deleteAccount.equals("Y") || deleteAccount.equals("y")) {
+                        // Delete account from database
+                        String deleteQuery = "DELETE FROM UserData WHERE Username = ?";
+                        PreparedStatement deleteStatement = connection7.prepareStatement(deleteQuery);
+                        deleteStatement.setString(1, usernameInput);
+                        deleteStatement.executeUpdate();
+
+                        System.out.println("Account deleted successfully!");
+                        exitDash = 2;
+                    } else {
+                        System.out.println("Account deletion cancelled, returning to dashboard.");
+                    }
+                
+                } catch (SQLException e) {
+                    System.out.println("Connection Failed! Check output console");
+                    e.printStackTrace();
+                }
+
+        return exitDash;
+    }
+    
 }
