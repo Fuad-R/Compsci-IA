@@ -108,10 +108,7 @@ public class UserAuth extends BankingApp {
                 String passwordInput = scanner.next();
            
                 String dbPassword = resultSet.getString("Password");
-
-                System.out.println(passwordInput);
-                System.out.println(dbPassword);
-
+                
                 // Check hashed password
                 boolean result = Password.check(passwordInput, dbPassword).withArgon2();
 

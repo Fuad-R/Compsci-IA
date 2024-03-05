@@ -2,6 +2,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Scanner;
+
+import com.password4j.Hash;
+import com.password4j.Password;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.io.FileInputStream;
@@ -153,22 +157,8 @@ public class BankingApp {
                 break;
 
                 case 5: // Manage Account
-                    System.out.println("Manage Account");
 
-                    // Clear terminal
-                    System.out.print(CLEAR);
-                    System.out.flush();
-
-                    System.out.println(FILLER);
-                    System.out.println("Account Management Menu");
-                    System.out.println(FILLER);
-
-                    System.out.println("1. Change Password");
-                    System.out.println("2. Delete Account");
-                    System.out.println("3. Return to Dashboard");
-                    System.out.println();
-                    System.out.print("Please enter the number of the action you would like to perform: ");
-                    int accountAction = scanner.nextInt();
+                    int accountAction = AppDashboard.accountdashboard(usernameInput);
 
                     // Clear terminal
                     System.out.print(CLEAR);
@@ -179,22 +169,26 @@ public class BankingApp {
                             System.out.println(FILLER);
                             System.out.println("Password Change Menu");
                             System.out.println(FILLER);
-                            System.out.println();
 
                             // Ask for old password
                             System.out.print("Please enter your old password: ");
-                            String oldPassword = scanner.nextLine();
-                            oldPassword = scanner.nextLine(); // Once again no idea why this is needed, but it is :(
+                            String oldPassword = scanner.next();
 
-                            // Verify old password
-                            String verifyQuery = "SELECT Password FROM UserData WHERE Username = ?";
-                            PreparedStatement verifyStatement = connection.prepareStatement(verifyQuery);
-                            verifyStatement.setString(1, usernameInput);
-                            ResultSet verifyResult = verifyStatement.executeQuery();
+                            // Get password of user from database
+                            String passwordQuery = "SELECT Password FROM UserData WHERE Username = ?";
+                            PreparedStatement passwordStatement = connection.prepareStatement(passwordQuery);
+                            passwordStatement.setString(1, usernameInput);
+                            ResultSet resultSet = passwordStatement.executeQuery();
+                            resultSet.next();
+                            
+                            // Set password from database to dbPassword
+                            String dbPassword = resultSet.getString("Password");
+                            
 
-                            if (verifyResult.next()) {
-                                String storedPassword = verifyResult.getString("Password");
-                                if (!storedPassword.equals(oldPassword)) {
+                            // Check if old password matches
+                            boolean result = Password.check(oldPassword, dbPassword).withArgon2();
+
+                            if (!result) {
 
                                     // Clear terminal
                                     System.out.print(CLEAR);
@@ -207,21 +201,18 @@ public class BankingApp {
 
                                     break;
                                 }
-                            } else {
-                                System.out.println("Failed to retrieve old password. Password change cancelled.");
-                                break;
-                            }
 
-                            System.out.println();
-                            System.out.print("Please enter your new password: ");
-                            String newPassword = scanner.nextLine();
-                            newPassword = scanner.nextLine(); // Same as before, again...
+                            // Flush the terminal
+                            System.out.println(CLEAR);
+                            System.out.flush();
+
+                            System.out.print("Password matched, please enter your new password: ");
+                            String newPassword = scanner.next();
 
                             System.out.println();
                             System.out.print("Please enter your new password again to confirm: ");
                             String passwordConfirm = scanner.nextLine();
-                            passwordConfirm = scanner.nextLine(); // Same here lol (4th time now)
-                            System.out.println();
+                            passwordConfirm = scanner.next();
 
                             boolean passwordMatch = newPassword.equals(passwordConfirm);
 
@@ -234,14 +225,26 @@ public class BankingApp {
                                 passwordMatch = newPassword.equals(passwordConfirm);
                             }
 
-                            // Update password in database
-                            String passwordQuery = "UPDATE UserData SET Password = ? WHERE Username = ?";
-                            PreparedStatement passwordStatement = connection.prepareStatement(passwordQuery);
-                            passwordStatement.setString(1, newPassword);
-                            passwordStatement.setString(2, usernameInput);
-                            passwordStatement.executeUpdate();
+                            // Hash the new password
+                            Hash hash = Password.hash(newPassword).addRandomSalt(32).withArgon2();
+                            newPassword = hash.getResult();
 
+                            // Update password in database
+                            String passwordChangeQuery = "UPDATE UserData SET Password = ? WHERE Username = ?";
+                            PreparedStatement passwordChangeStatement = connection.prepareStatement(passwordChangeQuery);
+                            passwordChangeStatement.setString(1, newPassword);
+                            passwordChangeStatement.setString(2, usernameInput);
+                            passwordChangeStatement.executeUpdate();
+
+                            // Clear the terminal
+                            System.out.println(CLEAR);
+                            System.out.flush();
+
+                            System.out.println(FILLER);
                             System.out.println("Password changed successfully!");
+                            System.out.println(FILLER);
+                            System.out.print("Press enter to return to dashboard:");
+                            scanner.next();
 
                             break;
                         case 2:

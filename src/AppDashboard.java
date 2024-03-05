@@ -36,4 +36,21 @@ public class AppDashboard extends BankOperations{
         System.out.print("Type 1 to return to the dashboard, or 2 to exit: ");
         return scanner.nextInt();
     }
+
+    public static int accountdashboard(String usernameInput){
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println(FILLER);
+        System.out.println("Welcome to your account menu " + usernameInput + "! What would you like to do today?");
+        System.out.println(FILLER);
+        System.out.println("1. Change Password");
+        System.out.println("2. Delete Account");
+        System.out.println("3. Return to Dashboard");
+        System.out.println();
+        System.out.print("Please enter the number of the action you would like to perform: ");
+        int accountAction = scanner.nextInt();
+
+        return accountAction;
+    }
 }
