@@ -5,11 +5,9 @@ public class BankingApp {
     //universal variables
     public static final String FILLER = "-------------------------------------------------------------------";
     public static final String CLEAR = "\033[H\033[2J";
+    public static final String exitMsg = "Exiting now, goodbye.";
 
     public static void main(String[] args) {
-        
-        // Define common strings to avoid repetition
-        String exitMsg = "Exiting now, goodbye.";
 
         Scanner scanner = new Scanner(System.in);
 
@@ -46,6 +44,7 @@ public class BankingApp {
             System.out.print(CLEAR);
             System.out.flush();
 
+/*
             switch (action) {
                 case 1: // View Balance
                     
@@ -159,7 +158,12 @@ public class BankingApp {
                     System.out.println("Invalid action, returning to dashboard.");
                     break;
             }
+
+*/
             
+            // Call the actions method 
+            exitDash = AppDashboard.operations(action, usernameInput);
+
         }
         //Close scanner
         scanner.close();
