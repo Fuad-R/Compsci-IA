@@ -63,69 +63,26 @@ public class AppDashboard extends BankOperations{
 
         switch (action) {
             case 1: // View Balance
-                
-                // Call the checkBalance method
                 double returnedbalance = BankOperations.checkBalance(usernameInput);
                                 
                 System.out.println(FILLER);
                 System.out.println("Your current balance is: $" + returnedbalance);
                 System.out.println(FILLER);
-                    
-                
-                exitDash = AppDashboard.displayReturnDashboard();
-                
-                if (exitDash == 2) {
-                    System.out.println(EXITMSG);
-                    break;
-                }
-
-            break;
+                break;
 
             case 2: // Deposit
-
-            // Call the deposit method
-            BankOperations.deposit(usernameInput);
-
-            exitDash = AppDashboard.displayReturnDashboard();
-                
-            if (exitDash == 2) {
-                System.out.println(EXITMSG);
+                BankOperations.deposit(usernameInput);
                 break;
-            }
-               
-            break;
 
             case 3: // Withdraw
-
-                // Call the withdraw method
                 BankOperations.withdraw(usernameInput);
-
-                exitDash = AppDashboard.displayReturnDashboard();
-                
-                if (exitDash == 2) {
-                    System.out.println(EXITMSG);
-                    break;
-                }
-
-            break;
+                break;
 
             case 4: // Transfer
-
-                // Call the transfer method
                 BankOperations.transfer(usernameInput);
-                
-
-                exitDash = AppDashboard.displayReturnDashboard();
-
-                if (exitDash == 2) {
-                    System.out.println(EXITMSG);
-                    break;
-                }
-
-            break;
+                break;
 
             case 5: // Manage Account
-
                 int accountAction = AppDashboard.accountdashboard(usernameInput);
 
                 // Clear terminal
@@ -133,33 +90,16 @@ public class AppDashboard extends BankOperations{
                 System.out.flush();
 
                 switch (accountAction) {
-                    case 1:
-
-                        // Call the changepassword method
+                    case 1: // Change Password
                         BankOperations.changePassword(usernameInput);
-                        
-                        System.out.println(FILLER);
-                        System.out.println("Password changed successfully!");
-                        System.out.println(FILLER);
-                        System.out.print("Returning to dashboard in 5 seconds...");
-                        try {
-                            Thread.sleep(5000);
-                        } catch (InterruptedException e) {
-                            Thread.currentThread().interrupt();
-                            e.printStackTrace();
-                        }
                         break;
-
-                    case 2:
-
-                        // Call deleteaccount method
+                    case 2: // Delete Account
                         exitDash = BankOperations.deleteAccount(usernameInput);
-
                         break;
-                    case 3:
+                    case 3: // Return to Dashboard
                         System.out.println("Returning to dashboard...");
                         break;
-                    default:
+                    default: // Invalid action
                         System.out.println("Invalid action, returning to dashboard.");
                         break;
                 }
@@ -167,13 +107,18 @@ public class AppDashboard extends BankOperations{
                 break;
             case 6: // Exit
                 System.out.println(EXITMSG);
-
                 exitDash = 2;
-
                 break;
-            default:// Invalid action
+            default: // Invalid action
                 System.out.println("Invalid action, returning to dashboard.");
                 break;
+        }
+
+        if (exitDash != 2) {
+            exitDash = AppDashboard.displayReturnDashboard();
+            if (exitDash == 2) {
+                System.out.println(EXITMSG);
+            }
         }
 
         return exitDash;
