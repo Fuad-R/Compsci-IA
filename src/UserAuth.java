@@ -1,15 +1,10 @@
 import com.password4j.Password;
 import com.password4j.Hash;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Scanner;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
-
 
 public class UserAuth extends BankingApp {
     
@@ -25,37 +20,12 @@ public class UserAuth extends BankingApp {
     public static void authmethod() {
         Scanner scanner = new Scanner(System.in);
 
-
-        // Load credentials from properties file
-        try (FileInputStream fis = new FileInputStream("db.properties")) {
-            Properties props = new Properties();
-            props.load(fis);
-
-            username = props.getProperty("username");
-            password = props.getProperty("password");
-            url = props.getProperty("url");
-
-        } catch (IOException e) {
-            System.out.println("Error loading database credentials");
-            e.printStackTrace();
-            return;
-        }
-
-        // Load MySQL JDBC Driver
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            System.out.println("MySQL JDBC Driver not found. Include it in your library path ");
-            e.printStackTrace();
-            scanner.close();
-            return;
-        }
-
         System.out.println("Establishing auth connection...");
 
         // Establishing permanent connection
+
         try {
-            Connection connection = DriverManager.getConnection(url, username, password);
+            Connection connection = BankOperations.getConnection();
             System.out.println("\u001B[32mDatabase connection established!\u001B[0m");
         
         // Clear the terminal
@@ -189,20 +159,8 @@ public class UserAuth extends BankingApp {
 
         Scanner scanner = new Scanner(System.in);
 
-        try (FileInputStream fis = new FileInputStream("db.properties")) {
-            Properties props = new Properties();
-            props.load(fis);
-
-            username = props.getProperty("username");
-            password = props.getProperty("password");
-            url = props.getProperty("url");
-        } catch (IOException e) {
-            System.out.println("Error loading database credentials");
-            e.printStackTrace();
-        }
-
         try {
-            Connection connection = DriverManager.getConnection(url, username, password);
+            Connection connection = BankOperations.getConnection();
             
 
             while (!authed) {

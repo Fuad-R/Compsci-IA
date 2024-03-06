@@ -1,8 +1,4 @@
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.util.Properties;
 import java.sql.PreparedStatement;
 
 public class TransactionLogger extends BankingApp{
@@ -14,23 +10,11 @@ public class TransactionLogger extends BankingApp{
     
 
     public static void logTransaction(String sender,String reciever, String action, double amount) {
-        
-        try (FileInputStream fis = new FileInputStream("db.properties")) {
-            Properties props = new Properties();
-            props.load(fis);
-
-            dbusername = props.getProperty("username");
-            dbpassword = props.getProperty("password");
-            dburl = props.getProperty("url");
-        } catch (IOException e) {
-            System.out.println("Error loading database credentials");
-            e.printStackTrace();
-        }
 
         // Log transaction to database
         try {
             
-            Connection connection = DriverManager.getConnection(dburl, dbusername, dbpassword);
+            Connection connection = BankOperations.getConnection();
 
             String sql = "INSERT INTO Transactions (Sender, Reciever, Value, Action, Timestamp) VALUES (?, ?, ?, ?, ?)";
 

@@ -20,24 +20,31 @@ public class BankOperations extends BankingApp{
         static String username = "";
         static String password = "";
 
-    public static Double checkBalance(String usernameInput) {
-
-        Double balance = 0.0;
-        
+    public static Connection getConnection() {
+        Connection connection = null;
         try (FileInputStream fis = new FileInputStream("db.properties")) {
             Properties props = new Properties();
             props.load(fis);
 
-            username = props.getProperty("username");
-            password = props.getProperty("password");
-            url = props.getProperty("url");
-        } catch (IOException e) {
+            String url = props.getProperty("url");
+            String username = props.getProperty("username");
+            String password = props.getProperty("password");
+
+            connection = DriverManager.getConnection(url, username, password);
+        } catch (IOException | SQLException e) {
             System.out.println("Error loading database credentials");
             e.printStackTrace();
         }
+        return connection;
+    }
+        
+
+    public static Double checkBalance(String usernameInput) {
+
+        Double balance = 0.0;
 
         try {
-            Connection connection = DriverManager.getConnection(url, username, password);
+            Connection connection = getConnection();
         
             String balanceQuery = "SELECT Balance FROM UserData WHERE Username = ?";
             PreparedStatement balanceStatement = connection.prepareStatement(balanceQuery);
@@ -62,20 +69,8 @@ public class BankOperations extends BankingApp{
 
         Scanner scanner = new Scanner(System.in);
 
-        try (FileInputStream fis = new FileInputStream("db.properties")) {
-            Properties props = new Properties();
-            props.load(fis);
-
-            username = props.getProperty("username");
-            password = props.getProperty("password");
-            url = props.getProperty("url");
-        } catch (IOException e) {
-            System.out.println("Error loading database credentials");
-            e.printStackTrace();
-        }
-
         try {
-        Connection connection2 = DriverManager.getConnection(url, username, password);
+        Connection connection2 = getConnection();
 
         System.out.println(FILLER);
         System.out.println("Depositing Menu");
@@ -133,20 +128,8 @@ public class BankOperations extends BankingApp{
 
         Scanner scanner = new Scanner(System.in);
 
-        try (FileInputStream fis = new FileInputStream("db.properties")) {
-            Properties props = new Properties();
-            props.load(fis);
-
-            username = props.getProperty("username");
-            password = props.getProperty("password");
-            url = props.getProperty("url");
-        } catch (IOException e) {
-            System.out.println("Error loading database credentials");
-            e.printStackTrace();
-        }
-
         try {
-        Connection connection3 = DriverManager.getConnection(url, username, password);
+        Connection connection3 = getConnection();
         
         // Print withdraw menu message
         System.out.println(FILLER);
@@ -206,20 +189,8 @@ public class BankOperations extends BankingApp{
         boolean transfercomplete = false;
         Scanner scanner = new Scanner(System.in);
 
-        try (FileInputStream fis = new FileInputStream("db.properties")) {
-            Properties props = new Properties();
-            props.load(fis);
-
-            username = props.getProperty("username");
-            password = props.getProperty("password");
-            url = props.getProperty("url");
-        } catch (IOException e) {
-            System.out.println("Error loading database credentials");
-            e.printStackTrace();
-        }
-
         try {
-            Connection connection5 = DriverManager.getConnection(url, username, password);           
+            Connection connection5 = getConnection();           
 
         while (!transfercomplete) {
                 // Print transfer message
@@ -376,23 +347,11 @@ public class BankOperations extends BankingApp{
 
         Scanner scanner = new Scanner(System.in);
 
-        try (FileInputStream fis = new FileInputStream("db.properties")) {
-            Properties props = new Properties();
-            props.load(fis);
-
-            username = props.getProperty("username");
-            password = props.getProperty("password");
-            url = props.getProperty("url");
-        } catch (IOException e) {
-            System.out.println("Error loading database credentials");
-            e.printStackTrace();
-        }
-
         boolean actionDone = false;
 
             try {
-                while (!actionDone){
-                Connection connection6 = DriverManager.getConnection(url, username, password);           
+                Connection connection6 = getConnection();
+                while (!actionDone){           
 
                 System.out.println(FILLER);
                 System.out.println("Password Change Menu");
@@ -480,23 +439,11 @@ public class BankOperations extends BankingApp{
 
             Scanner scanner = new Scanner(System.in);
     
-            try (FileInputStream fis = new FileInputStream("db.properties")) {
-                Properties props = new Properties();
-                props.load(fis);
-    
-                username = props.getProperty("username");
-                password = props.getProperty("password");
-                url = props.getProperty("url");
-            } catch (IOException e) {
-                System.out.println("Error loading database credentials");
-                e.printStackTrace();
-            }
-    
             int exitDash = 1;
 
                 try {
                     
-                    Connection connection7 = DriverManager.getConnection(url, username, password);
+                    Connection connection7 = getConnection();
 
                     // Ask for confirmation
                     System.out.print("Are you sure you want to delete your account? (\u001B[32mY\u001B[0m/\u001B[31mN\u001B[0m): ");
