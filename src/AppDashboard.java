@@ -63,11 +63,7 @@ public class AppDashboard extends BankOperations{
 
         switch (action) {
             case 1: // View Balance
-                double returnedbalance = BankOperations.checkBalance(usernameInput);
-                                
-                System.out.println(FILLER);
-                System.out.println("Your current balance is: $" + returnedbalance);
-                System.out.println(FILLER);
+                BankOperations.checkBalance(usernameInput);
                 break;
 
             case 2: // Deposit

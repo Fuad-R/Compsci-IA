@@ -2,13 +2,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 public class TransactionLogger extends BankingApp{
-    
-    // Load Database credentials
-    static String dburl = "";
-    static String dbusername = "";
-    static String dbpassword = "";
-    
-
+      
     public static void logTransaction(String sender,String reciever, String action, double amount) {
 
         // Log transaction to database

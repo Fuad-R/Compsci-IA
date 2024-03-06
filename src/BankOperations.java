@@ -39,7 +39,7 @@ public class BankOperations extends BankingApp{
     }
         
 
-    public static Double checkBalance(String usernameInput) {
+    public static void checkBalance(String usernameInput) {
 
         Double balance = 0.0;
 
@@ -55,13 +55,17 @@ public class BankOperations extends BankingApp{
                 balance = balanceResult.getDouble("Balance");
             }
 
+            System.out.println(FILLER);
+            System.out.println("Your current balance is: $" + balance);
+            System.out.println(FILLER);
+
         } catch (SQLException e) {
             System.out.println("Connection Failed! Check output console");
             e.printStackTrace();
 
         }
 
-        return balance;
+        return;
     
     }
 
