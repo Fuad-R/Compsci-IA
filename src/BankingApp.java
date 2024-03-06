@@ -11,9 +11,7 @@ public class BankingApp {
 
         Scanner scanner = new Scanner(System.in);
 
-        // Clear the terminal
-        System.out.print(CLEAR);
-        System.out.flush();
+        AppDashboard.clearTerminal();
           
         // Check if user is logged in
         boolean loggedInStatus = false;
@@ -40,9 +38,7 @@ public class BankingApp {
             // Ask for action
             action = scanner.nextInt();
 
-            // Clear terminal
-            System.out.print(CLEAR);
-            System.out.flush();
+            AppDashboard.clearTerminal();
             
             // Call the actions method 
             exitDash = AppDashboard.operations(action, usernameInput);

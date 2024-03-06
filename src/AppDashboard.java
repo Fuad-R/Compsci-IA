@@ -55,9 +55,7 @@ public class AppDashboard extends BankOperations{
 
     public static int operations(int action, String usernameInput) {
 
-        // Clear terminal
-        System.out.print(CLEAR);
-        System.out.flush();
+        clearTerminal();
 
         int exitDash = 1;
 
@@ -81,9 +79,7 @@ public class AppDashboard extends BankOperations{
             case 5: // Manage Account
                 int accountAction = AppDashboard.accountdashboard(usernameInput);
 
-                // Clear terminal
-                System.out.print(CLEAR);
-                System.out.flush();
+                clearTerminal();
 
                 switch (accountAction) {
                     case 1: // Change Password
@@ -118,5 +114,10 @@ public class AppDashboard extends BankOperations{
         }
 
         return exitDash;
+    }
+
+    public static void clearTerminal() {
+        System.out.print(CLEAR);
+        System.out.flush();
     }
 }

@@ -14,12 +14,6 @@ import java.util.Properties;
 
 public class BankOperations extends BankingApp{
 
-
-    // Load Database credentials
-        static String url = "";
-        static String username = "";
-        static String password = "";
-
     public static Connection getConnection() {
         Connection connection = null;
         try (FileInputStream fis = new FileInputStream("db.properties")) {
@@ -104,9 +98,7 @@ public class BankOperations extends BankingApp{
         if (newBalanceResult.next()) {
             double newBalance = newBalanceResult.getDouble("Balance");
 
-            // Clear terminal
-            System.out.print(CLEAR);
-            System.out.flush();
+            AppDashboard.clearTerminal();
 
             // Log transaction
             TransactionLogger.logTransaction(usernameInput, usernameInput, "Deposit", depositAmount);
@@ -165,9 +157,7 @@ public class BankOperations extends BankingApp{
         if (newWithdrawResult.next()) {
             double newBalance = newWithdrawResult.getDouble("Balance");
 
-            // Clear terminal
-            System.out.print(CLEAR);
-            System.out.flush();
+            AppDashboard.clearTerminal();
 
             System.out.println(FILLER);
             System.out.println("Withdrawal successful! You withdrew: $" + withdrawAmount);
@@ -215,9 +205,7 @@ public class BankOperations extends BankingApp{
                 recipientUsername = scanner.nextLine(); // No idea why this is needed, but it is
                 System.out.println();
 
-                // Clear terminal
-                System.out.print(CLEAR);
-                System.out.flush();
+                AppDashboard.clearTerminal();
 
                 // Print transfer info message
                 System.out.println(FILLER);
@@ -229,17 +217,13 @@ public class BankOperations extends BankingApp{
 
                 if (confirmTransfer.equals("N") || confirmTransfer.equals("n")) {
 
-                    // Clear terminal
-                    System.out.print(CLEAR);
-                    System.out.flush();
+                    AppDashboard.clearTerminal();
 
                     System.out.println("Transfer cancelled, returning to dashboard.");
                     break;
                 } else {
 
-                // Clear terminal
-                System.out.println(CLEAR);
-                System.out.flush();
+                AppDashboard.clearTerminal();
 
                 // Check if balance is sufficient
                 String checkBalanceQuery = "SELECT Balance FROM UserData WHERE Username = ?";
@@ -251,9 +235,7 @@ public class BankOperations extends BankingApp{
                     double balance = checkBalanceResult.getDouble("Balance");
                     if (balance < transferAmount * 1.01) {
 
-                        // Clear terminal
-                        System.out.print(CLEAR);
-                        System.out.flush();
+                        AppDashboard.clearTerminal();
 
                         System.out.println(FILLER);
                         System.out.println("Insufficient funds, transfer cancelled.");
@@ -262,9 +244,7 @@ public class BankOperations extends BankingApp{
                     }
                 } else {
 
-                    // Clear terminal
-                    System.out.print(CLEAR);
-                    System.out.flush();
+                    AppDashboard.clearTerminal();
 
                     System.out.println("Failed to retrieve balance.");
                 }
@@ -277,9 +257,7 @@ public class BankOperations extends BankingApp{
 
                 if (!checkRecipientResult.next()) {
 
-                    // Clear terminal
-                    System.out.print(CLEAR);
-                    System.out.flush();
+                    AppDashboard.clearTerminal();
 
                     System.out.println(FILLER);
                     System.out.println("Recipient does not exist, transfer cancelled.");
@@ -306,9 +284,7 @@ public class BankOperations extends BankingApp{
                 recipientStatement.setString(2, recipientUsername);
                 recipientStatement.executeUpdate();
 
-                // Clear the terminal
-                System.out.print(CLEAR);
-                System.out.flush();
+                AppDashboard.clearTerminal();
 
                 // Confirm transfer
                 System.out.println(FILLER);
@@ -330,9 +306,7 @@ public class BankOperations extends BankingApp{
                     TransactionLogger.logTransaction(usernameInput, recipientUsername, "Transfer", transferAmount);
                 } else {
 
-                    // Clear terminal
-                    System.out.print(CLEAR);
-                    System.out.flush();
+                    AppDashboard.clearTerminal();
 
                     System.out.println("Failed to retrieve new balance.");
                 }
@@ -381,9 +355,7 @@ public class BankOperations extends BankingApp{
 
                 if (!result) {
 
-                    // Clear terminal
-                    System.out.print(CLEAR);
-                    System.out.flush();
+                    AppDashboard.clearTerminal();
 
                     // Print error message
                     System.out.println("Incorrect old password. Password change cancelled.");
@@ -394,9 +366,7 @@ public class BankOperations extends BankingApp{
                     break;
                     }
 
-                // Flush the terminal
-                System.out.print(CLEAR);
-                System.out.flush();
+                AppDashboard.clearTerminal();
 
                 System.out.print("Password matched, please enter your new password: ");
                 String newPassword = scanner.next();
@@ -427,9 +397,7 @@ public class BankOperations extends BankingApp{
                 passwordChangeStatement.setString(2, usernameInput);
                 passwordChangeStatement.executeUpdate();
 
-                // Clear the terminal
-                System.out.print(CLEAR);
-                System.out.flush();
+                AppDashboard.clearTerminal();
 
                 actionDone = true;
             }
