@@ -126,6 +126,10 @@ public class BankOperations extends BankingApp{
             System.out.print(CLEAR);
             System.out.flush();
 
+            // Log transaction
+            TransactionLogger.logTransaction(usernameInput, usernameInput, "Deposit", depositAmount);
+            
+
             System.out.println(FILLER);
             System.out.println("Deposit successful! You deposited: $" + depositAmount);
             System.out.println("Your new balance is: $" + newBalance);
@@ -169,7 +173,6 @@ public class BankOperations extends BankingApp{
         // Ask for withdraw amount
         System.out.print("Please enter the amount you would like to withdraw: ");
         double withdrawAmount = scanner.nextDouble();
-        // scanner.close();
 
         //! *****************************************************
         //! ****** Add check for sufficient funds here **********
@@ -200,6 +203,9 @@ public class BankOperations extends BankingApp{
             System.out.println("Withdrawal successful! You withdrew: $" + withdrawAmount);
             System.out.println("Your new balance is: $" + newBalance);
             System.out.println(FILLER);
+
+            // Log transaction
+            TransactionLogger.logTransaction(usernameInput, usernameInput, "Withdraw", withdrawAmount);
 
         } else {
             System.out.println("Failed to retrieve new balance.");
@@ -361,6 +367,9 @@ public class BankOperations extends BankingApp{
                     double newBalance = newTransferResult.getDouble("Balance");
                     System.out.println("Your new balance is: $" + newBalance);
                     System.out.println(FILLER);
+
+                    // Log transaction
+                    TransactionLogger.logTransaction(usernameInput, recipientUsername, "Transfer", transferAmount);
                 } else {
 
                     // Clear terminal
