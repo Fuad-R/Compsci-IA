@@ -19,7 +19,7 @@ public class PasswordValidation extends UserAuth{
             System.out.println("Password must contain at least one number");
             return false;
         }
-        if (password.matches("[0-9]+")) {
+        if (password.matches("\\d+")) {
             System.out.println("Password must contain at least one letter");
             return false;
         } else{

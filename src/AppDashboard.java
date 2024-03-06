@@ -49,9 +49,8 @@ public class AppDashboard extends BankOperations{
         System.out.println("3. Return to Dashboard");
         System.out.println();
         System.out.print("Please enter the number of the action you would like to perform: ");
-        int accountAction = scanner.nextInt();
 
-        return accountAction;
+        return scanner.nextInt();
     }
 
     public static int operations(int action, String usernameInput) {
@@ -146,6 +145,7 @@ public class AppDashboard extends BankOperations{
                         try {
                             Thread.sleep(5000);
                         } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
                             e.printStackTrace();
                         }
                         break;

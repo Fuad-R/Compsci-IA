@@ -20,23 +20,6 @@ public class BankOperations extends BankingApp{
         static String username = "";
         static String password = "";
 
-    public BankOperations() {
-
-        // Load credentials from properties file
-        try (FileInputStream fis = new FileInputStream("db.properties")) {
-            Properties props = new Properties();
-            props.load(fis);
-
-            username = props.getProperty("username");
-            password = props.getProperty("password");
-        } catch (IOException e) {
-            System.out.println("Error loading database credentials");
-            e.printStackTrace();
-            return;
-        }
-
-    }
-
     public static Double checkBalance(String usernameInput) {
 
         Double balance = 0.0;
