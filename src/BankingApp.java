@@ -5,7 +5,7 @@ public class BankingApp {
     //universal variables
     public static final String FILLER = "-------------------------------------------------------------------";
     public static final String CLEAR = "\033[H\033[2J";
-    public static final String exitMsg = "Exiting now, goodbye.";
+    public static final String EXITMSG = "Exiting now, goodbye.";
 
     public static void main(String[] args) {
 
@@ -21,7 +21,7 @@ public class BankingApp {
         while (!loggedInStatus) {
 
             // Call UserAuth class to display login dashboard
-            UserAuth.loginmethod();
+            UserAuth.authmethod();
             loggedInStatus = UserAuth.isLoggedIn();
 
         }

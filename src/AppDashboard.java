@@ -76,7 +76,7 @@ public class AppDashboard extends BankOperations{
                 exitDash = AppDashboard.displayReturnDashboard();
                 
                 if (exitDash == 2) {
-                    System.out.println(exitMsg);
+                    System.out.println(EXITMSG);
                     break;
                 }
 
@@ -90,7 +90,7 @@ public class AppDashboard extends BankOperations{
             exitDash = AppDashboard.displayReturnDashboard();
                 
             if (exitDash == 2) {
-                System.out.println(exitMsg);
+                System.out.println(EXITMSG);
                 break;
             }
                
@@ -104,7 +104,7 @@ public class AppDashboard extends BankOperations{
                 exitDash = AppDashboard.displayReturnDashboard();
                 
                 if (exitDash == 2) {
-                    System.out.println(exitMsg);
+                    System.out.println(EXITMSG);
                     break;
                 }
 
@@ -119,7 +119,7 @@ public class AppDashboard extends BankOperations{
                 exitDash = AppDashboard.displayReturnDashboard();
 
                 if (exitDash == 2) {
-                    System.out.println(exitMsg);
+                    System.out.println(EXITMSG);
                     break;
                 }
 
@@ -166,7 +166,7 @@ public class AppDashboard extends BankOperations{
 
                 break;
             case 6: // Exit
-                System.out.println(exitMsg);
+                System.out.println(EXITMSG);
 
                 exitDash = 2;
 

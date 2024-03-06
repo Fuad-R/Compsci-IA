@@ -15,16 +15,16 @@ public class UserAuth extends BankingApp {
     
     private static boolean isloggedin = false;
     private static String usernameInput = "";
+    private static boolean authed = false;
+    
+    private static String url = "";
+    private static String username = "";
+    private static String password = "";
 
-    public static void loginmethod() {
+
+    public static void authmethod() {
         Scanner scanner = new Scanner(System.in);
 
-        boolean authed = false;
-
-        // Load Database credentials
-        String url = "";
-        String username = "";
-        String password = "";
 
         // Load credentials from properties file
         try (FileInputStream fis = new FileInputStream("db.properties")) {
@@ -83,95 +83,10 @@ public class UserAuth extends BankingApp {
 
             case 1: // Login
 
-            while (!authed) {
-
-            // Ask for username input
-            System.out.print("Please enter your username: ");
-            usernameInput = scanner.next();
-            
-            // Check if the user exists
-            String query = "SELECT * FROM UserData WHERE Username = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, usernameInput);
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-
-                // Clear the terminal
-                System.out.print(CLEAR);
-                System.out.flush();
-
-                System.out.println("User exists!");
-
-                // Ask for password input
-                System.out.print("Please enter your password: ");
-                String passwordInput = scanner.next();
-           
-                String dbPassword = resultSet.getString("Password");
-                
-                // Check hashed password
-                boolean result = Password.check(passwordInput, dbPassword).withArgon2();
-
-                if (result) {
-                    System.out.println("Password matched, signing you in...");
-                    authed = true;
-
-                    break;
-                
-                } else {
-                    System.out.println("Incorrect password, please try again.");
-                    System.out.println();
-                    
-                    int attempts = 3; // Number of attempts allowed
-                    while (attempts > 0) {
-
-                        System.out.print("Please enter your Password: ");
-                        passwordInput = scanner.nextLine();
-
-                        // Check hashed password
-                        result = Password.check(passwordInput, dbPassword).withArgon2();      
-
-                        if (result) {
-                            System.out.println("Password matched, signing you in...");
-                            authed = true;
-                            isloggedin = true;
-                            
-
-                            break; 
-
-                        } else {
-                            attempts--;
-
-                            // Clear the terminal
-                            System.out.print(CLEAR);
-                            System.out.flush();
-
-                            System.out.println("Incorrect password, " + attempts + " attempts remaining.");
-                            if (attempts == 0) {
-
-                                // Clear the terminal
-                                System.out.print(CLEAR);
-                                System.out.flush();
-
-                                System.out.println(FILLER);
-                                System.out.println("You have exceeded the maximum number of attempts.");
-                                System.out.println("Please try again later, or contact support if you believe this is a mistake.");
-                                System.out.println(FILLER);
-
-                                return;
-                            }
-                        }
-                    }
-
-                }
-             
-                
-                
-            } else {
-                System.out.println("User does not exist, please try again.");
-            }
- 
+        while (!authed){
+        authed = loginPage();
         }
+
         break;
 
             case 2: // Create Account
@@ -256,7 +171,6 @@ public class UserAuth extends BankingApp {
             System.out.println("\u001B[31mConnection failed! Check output console\u001B[0m");
             e.printStackTrace();
 
-            //scanner.close();
         }
 
         
@@ -271,5 +185,120 @@ public class UserAuth extends BankingApp {
         return usernameInput;
     }
     
+    public static boolean loginPage() {
+
+        Scanner scanner = new Scanner(System.in);
+
+        try (FileInputStream fis = new FileInputStream("db.properties")) {
+            Properties props = new Properties();
+            props.load(fis);
+
+            username = props.getProperty("username");
+            password = props.getProperty("password");
+            url = props.getProperty("url");
+        } catch (IOException e) {
+            System.out.println("Error loading database credentials");
+            e.printStackTrace();
+        }
+
+        try {
+            Connection connection = DriverManager.getConnection(url, username, password);
+            
+
+            while (!authed) {
+
+                // Ask for username input
+                System.out.print("Please enter your username: ");
+                usernameInput = scanner.next();
+                
+                // Check if the user exists
+                String query = "SELECT * FROM UserData WHERE Username = ?";
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setString(1, usernameInput);
+                ResultSet resultSet = statement.executeQuery();
+    
+                if (resultSet.next()) {
+    
+                    // Clear the terminal
+                    System.out.print(CLEAR);
+                    System.out.flush();
+    
+                    System.out.println("User exists!");
+    
+                    // Ask for password input
+                    System.out.print("Please enter your password: ");
+                    String passwordInput = scanner.next();
+               
+                    String dbPassword = resultSet.getString("Password");
+    
+                    // Check hashed password
+                    boolean result = Password.check(passwordInput, dbPassword).withArgon2();
+    
+                    if (result) {
+                        System.out.println("Password matched, signing you in...");
+                        authed = true;
+    
+                        break;
+                    
+                    } else {
+                        System.out.println("Incorrect password, please try again.");
+                        System.out.println();
+                        
+                        int attempts = 3; // Number of attempts allowed
+                        while (attempts > 0) {
+    
+                            System.out.print("Please enter your Password: ");
+                            passwordInput = scanner.nextLine();
+    
+                            // Check hashed password
+                            result = Password.check(passwordInput, dbPassword).withArgon2();      
+    
+                            if (result) {
+                                System.out.println("Password matched, signing you in...");
+                                authed = true;
+                                isloggedin = true; 
+    
+                            } else {
+                                attempts--;
+    
+                                // Clear the terminal
+                                System.out.print(CLEAR);
+                                System.out.flush();
+    
+                                System.out.println("Incorrect password, " + attempts + " attempts remaining.");
+                                if (attempts == 0) {
+    
+                                    // Clear the terminal
+                                    System.out.print(CLEAR);
+                                    System.out.flush();
+    
+                                    System.out.println(FILLER);
+                                    System.out.println("You have exceeded the maximum number of attempts.");
+                                    System.out.println("Please try again later, or contact support if you believe this is a mistake.");
+                                    System.out.println(FILLER);
+    
+                                    break;
+                                }
+                            }
+                        }
+    
+                    }
+                 
+                } else {
+                    System.out.println("User does not exist, please try again.");
+                }
+     
+            }
+            
+        } catch (SQLException e) {
+
+            System.out.println("\u001B[31mConnection failed! Check output console\u001B[0m");
+            e.printStackTrace();
+        }
+
+        return authed;
+    }
+
+
 }
 
