@@ -2,12 +2,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Scanner;
-
-import javax.naming.spi.DirStateFactory.Result;
-
 import com.password4j.Hash;
 import com.password4j.Password;
-
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

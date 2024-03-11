@@ -81,20 +81,7 @@ public class AppDashboard extends BankOperations{
 
                 clearTerminal();
 
-                switch (accountAction) {
-                    case 1: // Change Password
-                        BankOperations.changePassword(usernameInput);
-                        break;
-                    case 2: // Delete Account
-                        exitDash = BankOperations.deleteAccount(usernameInput);
-                        break;
-                    case 3: // Return to Dashboard
-                        System.out.println("Returning to dashboard...");
-                        break;
-                    default: // Invalid action
-                        System.out.println("Invalid action, returning to dashboard.");
-                        break;
-                }
+                exitDash = AppDashboard.accountdashSwitch(accountAction, usernameInput);
 
                 break;
             case 6: // Exit
@@ -111,6 +98,30 @@ public class AppDashboard extends BankOperations{
             if (exitDash == 2) {
                 System.out.println(EXITMSG);
             }
+        }
+
+        return exitDash;
+    }
+
+    public static int accountdashSwitch(int action, String usernameInput) {
+
+        clearTerminal();
+
+        int exitDash = 1;
+
+        switch (action) {
+            case 1: // Change Password
+                BankOperations.changePassword(usernameInput);
+                break;
+            case 2: // Delete Account
+                exitDash = BankOperations.deleteAccount(usernameInput);
+                break;
+            case 3: // Return to Dashboard
+                System.out.println("Returning to dashboard...");
+                break;
+            default: // Invalid action
+                System.out.println("Invalid action, returning to dashboard.");
+                break;
         }
 
         return exitDash;

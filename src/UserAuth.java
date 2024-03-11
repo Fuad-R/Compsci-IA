@@ -11,11 +11,6 @@ public class UserAuth extends BankingApp {
     private static boolean isloggedin = false;
     private static String usernameInput = "";
     private static boolean authed = false;
-    
-    private static String url = "";
-    private static String username = "";
-    private static String password = "";
-
 
     public static void authmethod() {
         Scanner scanner = new Scanner(System.in);
@@ -218,7 +213,7 @@ public class UserAuth extends BankingApp {
                                 isloggedin = true; 
                                 
                                 break;
-                                
+
                             } else {
                                 attempts--;
     
