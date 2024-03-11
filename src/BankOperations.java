@@ -3,6 +3,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.util.Scanner;
 
+import javax.naming.spi.DirStateFactory.Result;
+
 import com.password4j.Hash;
 import com.password4j.Password;
 
@@ -40,10 +42,7 @@ public class BankOperations extends BankingApp{
         try {
             Connection connection = getConnection();
         
-            String balanceQuery = "SELECT Balance FROM UserData WHERE Username = ?";
-            PreparedStatement balanceStatement = connection.prepareStatement(balanceQuery);
-            balanceStatement.setString(1, usernameInput);
-            ResultSet balanceResult = balanceStatement.executeQuery();
+            ResultSet balanceResult = pullBalance(usernameInput);
 
             if (balanceResult.next()) {
                 balance = balanceResult.getDouble("Balance");
@@ -77,7 +76,6 @@ public class BankOperations extends BankingApp{
         // Ask for deposit amount
         System.out.print("Please enter the amount you would like to deposit: ");
         double depositAmount = scanner.nextDouble();
-        ///scanner.close();
 
         // Update balance in database
         String depositQuery = "UPDATE UserData SET Balance = Balance + ? WHERE Username = ?";
@@ -87,10 +85,7 @@ public class BankOperations extends BankingApp{
         depositStatement.executeUpdate();
 
         // Pull new balance to print
-        String newBalanceQuery = "SELECT Balance FROM UserData WHERE Username = ?";
-        PreparedStatement newBalanceStatement = connection2.prepareStatement(newBalanceQuery);
-        newBalanceStatement.setString(1, usernameInput);
-        ResultSet newBalanceResult = newBalanceStatement.executeQuery();
+        ResultSet newBalanceResult = pullBalance(usernameInput);
         
         System.out.println();
 
@@ -148,10 +143,7 @@ public class BankOperations extends BankingApp{
         withdrawStatement.executeUpdate();
 
         // Pull new balance to print
-        String newWithdrawQuery = "SELECT Balance FROM UserData WHERE Username = ?";
-        PreparedStatement newWithdrawStatement = connection3.prepareStatement(newWithdrawQuery);
-        newWithdrawStatement.setString(1, usernameInput);
-        ResultSet newWithdrawResult = newWithdrawStatement.executeQuery();
+        ResultSet newWithdrawResult = pullBalance(usernameInput);
 
         // Print new balance
         if (newWithdrawResult.next()) {
@@ -291,10 +283,7 @@ public class BankOperations extends BankingApp{
                 System.out.println("Transfer of $" + transferAmount + " to " + recipientUsername + " was successful!");
 
                 // Pull new balance to print
-                String newTransferQuery = "SELECT Balance FROM UserData WHERE Username = ?";
-                PreparedStatement newTransferStatement = connection5.prepareStatement(newTransferQuery);
-                newTransferStatement.setString(1, usernameInput);
-                ResultSet newTransferResult = newTransferStatement.executeQuery();
+                ResultSet newTransferResult = pullBalance(usernameInput);
 
                 // Print new balance
                 if (newTransferResult.next()) {
@@ -442,4 +431,24 @@ public class BankOperations extends BankingApp{
         return exitDash;
     }
     
+    public static ResultSet pullBalance(String usernameInput) {
+
+        ResultSet balanceResult = null;
+
+        try {
+            Connection connection = getConnection();
+        
+            String balanceQuery = "SELECT Balance FROM UserData WHERE Username = ?";
+            PreparedStatement balanceStatement = connection.prepareStatement(balanceQuery);
+            balanceStatement.setString(1, usernameInput);
+            balanceResult = balanceStatement.executeQuery();
+
+        } catch (SQLException e) {
+            System.out.println("Connection Failed! Check output console");
+            e.printStackTrace();
+
+        }
+
+        return balanceResult;
+    }
 }
