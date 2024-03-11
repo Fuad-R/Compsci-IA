@@ -195,6 +195,7 @@ public class UserAuth extends BankingApp {
                     if (result) {
                         System.out.println("Password matched, signing you in...");
                         authed = true;
+                        isloggedin = true;
     
                         break;
                     
@@ -215,7 +216,9 @@ public class UserAuth extends BankingApp {
                                 System.out.println("Password matched, signing you in...");
                                 authed = true;
                                 isloggedin = true; 
-    
+                                
+                                break;
+                                
                             } else {
                                 attempts--;
     
