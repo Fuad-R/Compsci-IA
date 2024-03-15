@@ -16,7 +16,7 @@ on:
 jobs:
   build:
 
-    runs-on: self-hosted, ubuntu-latest
+    runs-on: ubuntu-latest
     permissions:
       contents: read
 
